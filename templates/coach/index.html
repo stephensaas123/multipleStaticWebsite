@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="site-title">Coach Professionnel</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #4caf50;
+            --secondary-color: #2e7d32;
+            --accent-color: #ff9800;
+            --text-light: #ffffff;
+            --text-dark: #1b1b1b;
+            --background: #fafafa;
+            --success: #66bb6a;
+            --gradient: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.7;
+            color: var(--text-dark);
+            background: var(--background);
+        }
+
+        /* Header */
+        .header {
+            background: var(--gradient);
+            color: var(--text-light);
+            text-align: center;
+            padding: 100px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 80%, rgba(255,152,0,0.2) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(255,255,255,0.1) 0%, transparent 50%);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo {
+            font-size: 3.5em;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .tagline {
+            font-size: 1.4em;
+            font-weight: 300;
+            margin-bottom: 40px;
+            opacity: 0.95;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-button {
+            background: var(--accent-color);
+            color: white;
+            padding: 15px 35px;
+            font-size: 1.1em;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+        }
+
+        .cta-button:hover {
+            background: #f57c00;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 152, 0, 0.3);
+        }
+
+        .nav {
+            background: var(--secondary-color);
+            padding: 15px 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .nav a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 1.1em;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 12px 20px;
+            border-radius: 25px;
+            position: relative;
+        }
+
+        .nav a:hover, .nav a.active {
+            color: var(--accent-color);
+            background: rgba(255, 152, 0, 0.15);
+        }
+
+        /* Main content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.8em;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+            font-weight: 600;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--gradient);
+            border-radius: 2px;
+        }
+
+        .section-description {
+            text-align: center;
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 60px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.8;
+        }
+
+        /* Services Grid */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .service-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient);
+        }
+
+        .service-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(76, 175, 80, 0.15);
+        }
+
+        .service-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2em;
+            color: white;
+            margin: 0 auto 25px;
+            transition: transform 0.3s ease;
+        }
+
+        .service-card:hover .service-icon {
+            transform: scale(1.1);
+        }
+
+        .service-name {
+            font-size: 1.4em;
+            font-weight: 600;
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+        }
+
+        .service-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .service-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .service-price {
+            color: var(--primary-color);
+            font-weight: 700;
+            font-size: 1.3em;
+        }
+
+        .service-duration {
+            color: #999;
+            font-size: 0.9em;
+        }
+
+        .service-level {
+            background: var(--accent-color);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 500;
+        }
+
+        /* Approach Section */
+        .approach-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+
+        .approach-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .approach-step {
+            text-align: center;
+            position: relative;
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            margin: 0 auto 20px;
+        }
+
+        .step-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+        }
+
+        .step-description {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* Booking Section */
+        .booking-section {
+            background: var(--gradient);
+            color: white;
+            text-align: center;
+            padding: 80px 0;
+            position: relative;
+        }
+
+        .booking-button {
+            background: var(--accent-color);
+            color: white;
+            padding: 18px 40px;
+            font-size: 1.2em;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin: 20px;
+        }
+
+        .booking-button:hover {
+            background: #f57c00;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(255, 152, 0, 0.4);
+        }
+
+        /* Testimonials */
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .testimonial-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            position: relative;
+        }
+
+        .testimonial-quote {
+            font-size: 1.1em;
+            line-height: 1.6;
+            color: #555;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .testimonial-author {
+            font-weight: 600;
+            color: var(--secondary-color);
+        }
+
+        .testimonial-rating {
+            color: var(--accent-color);
+            margin-top: 10px;
+        }
+
+        /* Info Section */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .info-card {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .info-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            color: white;
+            margin: 0 auto 20px;
+        }
+
+        .info-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+        }
+
+        .info-content {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--secondary-color);
+            color: var(--text-light);
+            text-align: center;
+            padding: 60px 0 40px;
+        }
+
+        .footer p {
+            margin-bottom: 10px;
+            opacity: 0.8;
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 60px 0;
+            font-size: 1.2em;
+            color: #666;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2.5em;
+            }
+
+            .nav ul {
+                flex-wrap: wrap;
+                gap: 15px;
+                justify-content: center;
+            }
+
+            .nav a {
+                font-size: 1em;
+                padding: 10px 15px;
+            }
+
+            .section-title {
+                font-size: 2.2em;
+            }
+
+            .services-grid,
+            .approach-grid,
+            .info-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <h1 class="logo" id="business-name">🎯 Coach Professionnel</h1>
+            <p class="tagline" id="business-tagline">Accompagnement personnalisé pour atteindre vos objectifs</p>
+            <a href="#reservation" class="cta-button">Réserver une séance</a>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <ul>
+            <li><a href="#accueil" class="active">Accueil</a></li>
+            <li><a href="#services">Mes Services</a></li>
+            <li><a href="#approche">Mon Approche</a></li>
+            <li><a href="#temoignages">Témoignages</a></li>
+            <li><a href="#reservation">Réserver</a></li>
+            <li><a href="#info">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Services Section -->
+    <section id="services" class="section">
+        <div class="container">
+            <h2 class="section-title">Mes Services</h2>
+            <p class="section-description">Un accompagnement sur mesure adapté à vos besoins et objectifs personnels ou professionnels</p>
+            
+            <div class="loading" id="services-loading">
+                <div class="spinner"></div>
+                <p>Chargement des services...</p>
+            </div>
+            
+            <div class="services-grid" id="services-grid" style="display: none;">
+                <!-- Services will be loaded here dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Approach Section -->
+    <section id="approche" class="section approach-section">
+        <div class="container">
+            <h2 class="section-title">Mon Approche</h2>
+            <p class="section-description">Une méthodologie éprouvée en 4 étapes pour vous accompagner vers le succès</p>
+            
+            <div class="approach-grid">
+                <div class="approach-step">
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">Diagnostic</h3>
+                    <p class="step-description">Analyse de votre situation actuelle et identification de vos objectifs</p>
+                </div>
+                
+                <div class="approach-step">
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">Stratégie</h3>
+                    <p class="step-description">Élaboration d'un plan d'action personnalisé et réalisable</p>
+                </div>
+                
+                <div class="approach-step">
+                    <div class="step-number">3</div>
+                    <h3 class="step-title">Action</h3>
+                    <p class="step-description">Mise en œuvre des actions avec un accompagnement régulier</p>
+                </div>
+                
+                <div class="approach-step">
+                    <div class="step-number">4</div>
+                    <h3 class="step-title">Résultats</h3>
+                    <p class="step-description">Évaluation des progrès et ajustement si nécessaire</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="temoignages" class="section">
+        <div class="container">
+            <h2 class="section-title">Témoignages</h2>
+            <p class="section-description">Ce que disent mes clients</p>
+            
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <p class="testimonial-quote">"Un accompagnement exceptionnel qui m'a permis d'atteindre mes objectifs plus rapidement que prévu. Merci pour cette transformation !"</p>
+                    <div class="testimonial-author">Marie L.</div>
+                    <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <p class="testimonial-quote">"Approche très professionnelle et bienveillante. Les séances m'ont vraiment aidé à gagner en confiance et en efficacité."</p>
+                    <div class="testimonial-author">Thomas R.</div>
+                    <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <p class="testimonial-quote">"Des résultats concrets dès les premières séances. Je recommande vivement cet accompagnement personnalisé."</p>
+                    <div class="testimonial-author">Sophie M.</div>
+                    <div class="testimonial-rating">⭐⭐⭐⭐⭐</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Booking Section with Calendly Widget -->
+    <section id="reservation" class="booking-section">
+        <div class="container">
+            <h2 style="margin-bottom: 20px; font-weight: 300;">Réserver une séance</h2>
+            <p style="margin-bottom: 40px; font-size: 1.2em; opacity: 0.9;">Choisissez le créneau qui vous convient</p>
+            
+            <!-- Calendly Widget Container -->
+            <div id="calendly-widget">
+                <button class="booking-button" onclick="openBookingWidget()">
+                    📅 Réserver maintenant
+                </button>
+            </div>
+            
+            <button class="booking-button" onclick="contactCoach()">
+                💬 Me contacter
+            </button>
+        </div>
+    </section>
+
+    <!-- Info Section -->
+    <section id="info" class="section">
+        <div class="container">
+            <h2 class="section-title">Informations Pratiques</h2>
+            
+            <div class="info-grid">
+                <div class="info-card">
+                    <div class="info-icon">📍</div>
+                    <h3 class="info-title">Localisation</h3>
+                    <div class="info-content" id="business-address">Chargement...</div>
+                </div>
+                
+                <div class="info-card">
+                    <div class="info-icon">📞</div>
+                    <h3 class="info-title">Téléphone</h3>
+                    <div class="info-content" id="business-phone">Chargement...</div>
+                </div>
+                
+                <div class="info-card">
+                    <div class="info-icon">🕒</div>
+                    <h3 class="info-title">Disponibilités</h3>
+                    <div class="info-content" id="business-hours">
+                        <p>Lun-Ven: 9h-19h</p>
+                        <p>Samedi: 9h-17h</p>
+                        <p>Séances en ligne disponibles</p>
+                    </div>
+                </div>
+                
+                <div class="info-card">
+                    <div class="info-icon">✉️</div>
+                    <h3 class="info-title">Email</h3>
+                    <div class="info-content" id="business-email">Chargement...</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 <span id="footer-name">Coach Professionnel</span>. Tous droits réservés.</p>
+            <p>Site créé avec MultiBusinessTemplate</p>
+        </div>
+    </footer>
+
+    <script>
+        // Configuration
+        const SUPABASE_URL = 'YOUR_SUPABASE_URL';
+        const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+        const BUSINESS_ID = 'BUSINESS_ID_TO_REPLACE';
+
+        // Initialize Supabase client
+        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        let businessData = null;
+        let widgetConfig = null;
+
+        // Initialize the site
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadBusinessData();
+            await loadServicesData();
+            setupNavigation();
+            initializeWidgets();
+        });
+
+        // Load business information
+        async function loadBusinessData() {
+            try {
+                const { data: business, error } = await supabase
+                    .from('businesses')
+                    .select('*')
+                    .eq('id', BUSINESS_ID)
+                    .single();
+
+                if (error) {
+                    console.error('Error loading business data:', error);
+                    return;
+                }
+
+                businessData = business;
+                widgetConfig = business.widget_config || {};
+                updateBusinessInfo();
+                
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        // Update business information on the page
+        function updateBusinessInfo() {
+            if (!businessData) return;
+
+            document.title = businessData.name;
+            document.getElementById('site-title').textContent = businessData.name;
+            document.getElementById('business-name').textContent = '🎯 ' + businessData.name;
+            
+            if (businessData.description) {
+                document.getElementById('business-tagline').textContent = businessData.description;
+            }
+
+            document.getElementById('business-address').textContent = businessData.address || 'Séances en présentiel et visio';
+            document.getElementById('business-phone').textContent = businessData.phone || 'Non renseigné';
+            document.getElementById('business-email').textContent = businessData.email || 'Non renseigné';
+            document.getElementById('footer-name').textContent = businessData.name;
+
+            if (businessData.theme_config) {
+                applyTheme(businessData.theme_config);
+            }
+        }
+
+        // Load services data
+        async function loadServicesData() {
+            try {
+                const { data: services, error } = await supabase
+                    .from('products_services')
+                    .select('*')
+                    .eq('business_id', BUSINESS_ID)
+                    .eq('is_available', true)
+                    .order('sort_order', { ascending: true });
+
+                if (error) {
+                    console.error('Error loading services:', error);
+                    return;
+                }
+
+                displayServices(services);
+                
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('services-loading').innerHTML = '<p>Erreur lors du chargement des services</p>';
+            }
+        }
+
+        // Display services
+        function displayServices(services) {
+            const servicesContainer = document.getElementById('services-grid');
+            const loadingElement = document.getElementById('services-loading');
+
+            if (!services || services.length === 0) {
+                loadingElement.innerHTML = '<p>Aucun service disponible pour le moment</p>';
+                return;
+            }
+
+            const servicesHTML = services.map(service => `
+                <div class="service-card">
+                    <div class="service-icon">
+                        ${getServiceIcon(service.name)}
+                    </div>
+                    <h3 class="service-name">${service.name}</h3>
+                    <p class="service-description">${service.description || 'Service de coaching personnalisé'}</p>
+                    <div class="service-details">
+                        <span class="service-price">${service.price ? service.price.toFixed(2) + '€' : 'Sur devis'}</span>
+                        <span class="service-duration">${service.metadata?.duration || '60min'}</span>
+                        ${service.metadata?.level ? `<span class="service-level">${service.metadata.level}</span>` : ''}
+                    </div>
+                </div>
+            `).join('');
+
+            servicesContainer.innerHTML = servicesHTML;
+            loadingElement.style.display = 'none';
+            servicesContainer.style.display = 'grid';
+        }
+
+        // Get service icon based on name
+        function getServiceIcon(serviceName) {
+            const name = serviceName.toLowerCase();
+            if (name.includes('coaching') || name.includes('accompagnement')) return '🎯';
+            if (name.includes('formation') || name.includes('cours')) return '📚';
+            if (name.includes('développement') || name.includes('croissance')) return '🌱';
+            if (name.includes('leadership') || name.includes('management')) return '👑';
+            if (name.includes('bien-être') || name.includes('stress')) return '🧘‍♀️';
+            if (name.includes('carrière') || name.includes('professionnel')) return '💼';
+            return '✨';
+        }
+
+        // Apply custom theme
+        function applyTheme(themeConfig) {
+            const root = document.documentElement;
+            if (themeConfig.primary_color) {
+                root.style.setProperty('--primary-color', themeConfig.primary_color);
+            }
+            if (themeConfig.secondary_color) {
+                root.style.setProperty('--secondary-color', themeConfig.secondary_color);
+            }
+            if (themeConfig.accent_color) {
+                root.style.setProperty('--accent-color', themeConfig.accent_color);
+            }
+        }
+
+        // Initialize widgets (Calendly)
+        function initializeWidgets() {
+            if (widgetConfig.calendly_url) {
+                loadCalendlyWidget();
+            }
+        }
+
+        // Load Calendly widget
+        function loadCalendlyWidget() {
+            const script = document.createElement('script');
+            script.src = 'https://assets.calendly.com/assets/external/widget.js';
+            script.onload = () => {
+                window.CalendlyConfig = {
+                    url: widgetConfig.calendly_url,
+                    theme: 'light',
+                    prefill: {}
+                };
+            };
+            document.head.appendChild(script);
+        }
+
+        // Open booking widget
+        function openBookingWidget() {
+            if (widgetConfig.calendly_url && window.Calendly) {
+                window.Calendly.initPopupWidget({ url: widgetConfig.calendly_url });
+            } else {
+                alert('La prise de rendez-vous en ligne n\'est pas encore configurée. Contactez-moi directement !');
+            }
+        }
+
+        // Contact coach
+        function contactCoach() {
+            if (businessData && businessData.email) {
+                window.location.href = `mailto:${businessData.email}?subject=Demande d'information`;
+            } else {
+                alert('Email de contact non configuré');
+            }
+        }
+
+        // Setup navigation
+        function setupNavigation() {
+            const navLinks = document.querySelectorAll('.nav a');
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = link.getAttribute('href');
+                    
+                    if (targetId === '#accueil') {
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    } else {
+                        const targetElement = document.querySelector(targetId);
+                        if (targetElement) {
+                            const offsetTop = targetElement.offsetTop - 80;
+                            window.scrollTo({ top: offsetTop, behavior: 'smooth' });
+                        }
+                    }
+                    
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    link.classList.add('active');
+                });
+            });
+
+            // Update active nav on scroll
+            window.addEventListener('scroll', () => {
+                const sections = ['services', 'approche', 'temoignages', 'reservation', 'info'];
+                const scrollPos = window.scrollY + 100;
+
+                sections.forEach(sectionId => {
+                    const section = document.getElementById(sectionId);
+                    if (section && scrollPos >= section.offsetTop && scrollPos < section.offsetTop + section.offsetHeight) {
+                        navLinks.forEach(l => l.classList.remove('active'));
+                        const activeLink = document.querySelector(`[href="#${sectionId}"]`);
+                        if (activeLink) activeLink.classList.add('active');
+                    }
+                });
+
+                if (window.scrollY < 100) {
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    document.querySelector('[href="#accueil"]').classList.add('active');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
