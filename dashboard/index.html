@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Gestion de votre site</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+    <div id="auth-container" style="display: none;">
+        <div class="auth-box">
+            <h2>Connexion Dashboard</h2>
+            <form id="login-form">
+                <input type="email" id="email" placeholder="Email" required>
+                <input type="password" id="password" placeholder="Mot de passe" required>
+                <button type="submit">Se connecter</button>
+            </form>
+            <p><a href="#" id="show-register">Créer un compte</a></p>
+            
+            <form id="register-form" style="display: none;">
+                <h3>Créer un compte</h3>
+                <input type="email" id="reg-email" placeholder="Email" required>
+                <input type="password" id="reg-password" placeholder="Mot de passe" required>
+                <select id="business-type" required>
+                    <option value="">Choisir le type de business</option>
+                    <option value="restaurant">Restaurant</option>
+                    <option value="coiffeur">Salon de coiffure</option>
+                    <option value="independant">Professionnel indépendant</option>
+                    <option value="commerce">Commerce</option>
+                </select>
+                <input type="text" id="business-id" placeholder="Identifiant unique (ex: restaurant-dubois)" required>
+                <button type="submit">Créer le compte</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="dashboard-container" style="display: none;">
+        <header class="dashboard-header">
+            <h1>Dashboard <span id="business-name"></span></h1>
+            <div class="header-actions">
+                <button id="preview-site" class="btn-primary">Prévisualiser le site</button>
+                <button id="logout" class="btn-secondary">Déconnexion</button>
+            </div>
+        </header>
+
+        <nav class="dashboard-nav">
+            <button class="nav-btn active" data-section="basic">Informations générales</button>
+            <button class="nav-btn" data-section="content">Contenu</button>
+            <button class="nav-btn" data-section="images">Images</button>
+            <button class="nav-btn" data-section="widgets">Widgets</button>
+        </nav>
+
+        <main class="dashboard-main">
+            <!-- Section Informations générales -->
+            <section id="section-basic" class="dashboard-section active">
+                <h2>Informations générales</h2>
+                <form id="basic-form" class="dashboard-form">
+                    <div class="form-group">
+                        <label for="name">Nom du business</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea id="description" name="description" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Adresse</label>
+                        <textarea id="address" name="address" rows="2"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Téléphone</label>
+                        <input type="tel" id="phone" name="phone">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email-business" name="email">
+                    </div>
+                    <div class="form-group">
+                        <label>Horaires d'ouverture</label>
+                        <div class="hours-grid">
+                            <div class="hour-day">
+                                <label>Lundi</label>
+                                <input type="text" name="hours.monday" placeholder="09h-18h ou Fermé">
+                            </div>
+                            <div class="hour-day">
+                                <label>Mardi</label>
+                                <input type="text" name="hours.tuesday" placeholder="09h-18h ou Fermé">
+                            </div>
+                            <div class="hour-day">
+                                <label>Mercredi</label>
+                                <input type="text" name="hours.wednesday" placeholder="09h-18h ou Fermé">
+                            </div>
+                            <div class="hour-day">
+                                <label>Jeudi</label>
+                                <input type="text" name="hours.thursday" placeholder="09h-18h ou Fermé">
+                            </div>
+                            <div class="hour-day">
+                                <label>Vendredi</label>
+                                <input type="text" name="hours.friday" placeholder="09h-18h ou Fermé">
+                            </div>
+                            <div class="hour-day">
+                                <label>Samedi</label>
+                                <input type="text" name="hours.saturday" placeholder="09h-18h ou Fermé">
+                            </div>
+                            <div class="hour-day">
+                                <label>Dimanche</label>
+                                <input type="text" name="hours.sunday" placeholder="09h-18h ou Fermé">
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary">Enregistrer</button>
+                </form>
+            </section>
+
+            <!-- Section Contenu -->
+            <section id="section-content" class="dashboard-section">
+                <h2>Contenu du site</h2>
+                
+                <!-- Section Hero -->
+                <div class="content-block">
+                    <h3>Section d'accueil (Hero)</h3>
+                    <form id="hero-form" class="dashboard-form">
+                        <div class="form-group">
+                            <label for="hero-title">Titre principal</label>
+                            <input type="text" id="hero-title" name="hero.title">
+                        </div>
+                        <div class="form-group">
+                            <label for="hero-subtitle">Sous-titre</label>
+                            <input type="text" id="hero-subtitle" name="hero.subtitle">
+                        </div>
+                        <div class="form-group">
+                            <label for="hero-cta">Texte du bouton d'action</label>
+                            <input type="text" id="hero-cta" name="hero.cta_text">
+                        </div>
+                        <button type="submit" class="btn-primary">Enregistrer Hero</button>
+                    </form>
+                </div>
+
+                <!-- Contenu dynamique selon le type de business -->
+                <div id="dynamic-content"></div>
+            </section>
+
+            <!-- Section Images -->
+            <section id="section-images" class="dashboard-section">
+                <h2>Gestion des images</h2>
+                
+                <div class="image-upload-section">
+                    <h3>Image principale (Hero)</h3>
+                    <div class="image-upload-zone" data-target="hero">
+                        <input type="file" id="hero-image" accept="image/*">
+                        <div class="upload-placeholder">
+                            <p>Cliquez pour sélectionner une image ou glissez-déposez</p>
+                            <div id="hero-preview" class="image-preview"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="image-upload-section">
+                    <h3>Galerie</h3>
+                    <div class="image-upload-zone" data-target="gallery">
+                        <input type="file" id="gallery-images" accept="image/*" multiple>
+                        <div class="upload-placeholder">
+                            <p>Sélectionnez plusieurs images pour la galerie</p>
+                        </div>
+                    </div>
+                    <div id="gallery-preview" class="gallery-grid"></div>
+                </div>
+            </section>
+
+            <!-- Section Widgets -->
+            <section id="section-widgets" class="dashboard-section">
+                <h2>Widgets d'intégration</h2>
+                <div id="widgets-container"></div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Scripts Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-storage.js"></script>
+    
+    <!-- Scripts personnalisés -->
+    <script src="js/firebase-init.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        /* Auth Styles */
+        #auth-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .auth-box {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .auth-box h2, .auth-box h3 {
+            margin-bottom: 1rem;
+            text-align: center;
+            color: #333;
+        }
+
+        .auth-box input, .auth-box select {
+            width: 100%;
+            padding: 0.8rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .auth-box button {
+            width: 100%;
+            padding: 0.8rem;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-bottom: 1rem;
+        }
+
+        .auth-box button:hover {
+            background: #5a67d8;
+        }
+
+        /* Dashboard Styles */
+        .dashboard-header {
+            background: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .dashboard-header h1 {
+            color: #333;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn-primary, .btn-secondary {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #4a5568;
+        }
+
+        .dashboard-nav {
+            background: white;
+            padding: 0 2rem;
+            display: flex;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .nav-btn {
+            background: none;
+            border: none;
+            padding: 1rem;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            font-size: 0.9rem;
+            color: #4a5568;
+        }
+
+        .nav-btn.active {
+            border-bottom-color: #667eea;
+            color: #667eea;
+        }
+
+        .dashboard-main {
+            padding: 2rem;
+        }
+
+        .dashboard-section {
+            display: none;
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .dashboard-section.active {
+            display: block;
+        }
+
+        .dashboard-form {
+            max-width: 600px;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #d1d5db;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .hours-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .hour-day label {
+            font-size: 0.9rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .content-block {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+        }
+
+        .content-block h3 {
+            margin-bottom: 1rem;
+            color: #4a5568;
+        }
+
+        .image-upload-section {
+            margin-bottom: 2rem;
+        }
+
+        .image-upload-zone {
+            border: 2px dashed #d1d5db;
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.3s ease;
+        }
+
+        .image-upload-zone:hover {
+            border-color: #667eea;
+        }
+
+        .image-preview {
+            margin-top: 1rem;
+        }
+
+        .image-preview img {
+            max-width: 200px;
+            max-height: 200px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .gallery-item {
+            position: relative;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .gallery-item .remove-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: red;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+        }
+
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .success-message {
+            background: #f0fff4;
+            border: 1px solid #68d391;
+            color: #22543d;
+            padding: 1rem;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+        }
+
+        .error-message {
+            background: #fff5f5;
+            border: 1px solid #fc8181;
+            color: #742a2a;
+            padding: 1rem;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+        }
+    </style>
+</body>
+</html>

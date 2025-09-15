@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{PAGE_TITLE}}</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="site-header">
+        <nav class="navbar">
+            <div class="nav-brand">
+                <h1 id="business-name">Chargement...</h1>
+            </div>
+            <ul class="nav-menu" id="nav-menu">
+                <!-- Navigation générée dynamiquement -->
+            </ul>
+            <div class="nav-mobile">
+                <button class="nav-toggle" onclick="toggleMobileMenu()">☰</button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <!-- Section Hero - sera générée dynamiquement -->
+        <section id="hero-section" class="hero-section">
+            <div class="loading">Chargement de la section principale...</div>
+        </section>
+
+        <!-- Section présentation -->
+        <section class="restaurant-intro">
+            <div class="container">
+                <div class="intro-content">
+                    <h2>Bienvenue dans notre restaurant</h2>
+                    <div class="loading">Chargement des informations...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section aperçu menu -->
+        <div id="menu-preview-container">
+            <!-- Sera généré dynamiquement par le DataLoader -->
+        </div>
+
+        <!-- Section galerie -->
+        <div id="gallery-section">
+            <!-- Sera générée dynamiquement -->
+        </div>
+
+        <!-- Section informations pratiques -->
+        <section class="restaurant-info">
+            <div class="container">
+                <div class="info-grid">
+                    <div class="info-card">
+                        <h3>Réservation</h3>
+                        <p>Réservez votre table en ligne ou par téléphone</p>
+                        <a href="reservation.html" class="btn-primary">Réserver</a>
+                    </div>
+                    <div class="info-card">
+                        <h3>Menu</h3>
+                        <p>Découvrez notre carte et nos spécialités</p>
+                        <a href="menu.html" class="btn-secondary">Voir le menu</a>
+                    </div>
+                    <div class="info-card">
+                        <h3>Contact</h3>
+                        <p>Nous contacter pour plus d'informations</p>
+                        <a href="contact.html" class="btn-secondary">Nous contacter</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content" id="footer-content">
+                <div class="loading">Chargement des informations de contact...</div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-storage.js"></script>
+    
+    <!-- Scripts personnalisés -->
+    <script src="js/firebase-client.js"></script>
+    <script src="js/data-loader.js"></script>
+    <script src="js/utils.js"></script>
+
+    <script>
+        const BUSINESS_ID = '{{BUSINESS_ID}}';
+        const BUSINESS_TYPE = '{{BUSINESS_TYPE}}';
+        const CURRENT_PAGE = 'accueil';
+        
+        window.addEventListener('DOMContentLoaded', function() {
+            initializePage();
+        });
+
+        function toggleMobileMenu() {
+            const navMenu = document.getElementById('nav-menu');
+            navMenu.classList.toggle('active');
+        }
+    </script>
+
+    <style>
+        /* Styles spécifiques au template restaurant */
+        :root {
+            --primary-color: {{PRIMARY_COLOR}};
+            --secondary-color: {{SECONDARY_COLOR}};
+            --accent-color: {{ACCENT_COLOR}};
+            --text-color: #333;
+            --bg-color: #fafafa;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .site-header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+
+        .nav-brand h1 {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            color: var(--primary-color);
+        }
+
+        .nav-mobile {
+            display: none;
+        }
+
+        .nav-toggle {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-top: 80px;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            height: 60vh;
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4));
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        .hero-content h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .hero-cta {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background 0.3s ease;
+            text-shadow: none;
+        }
+
+        .hero-cta:hover {
+            background: var(--secondary-color);
+        }
+
+        /* Restaurant Intro */
+        .restaurant-intro {
+            padding: 4rem 0;
+            background: white;
+        }
+
+        .intro-content {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .intro-content h2 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+        }
+
+        /* Preview Sections */
+        .preview-section {
+            padding: 4rem 0;
+            background: #f8f8f8;
+        }
+
+        .preview-section:nth-child(even) {
+            background: white;
+        }
+
+        .preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0 20px;
+        }
+
+        .preview-header h2 {
+            font-size: 2rem;
+            color: var(--primary-color);
+        }
+
+        .menu-preview-items,
+        .services-preview-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .preview-item {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .preview-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .preview-item h4 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .preview-item p {
+            margin-bottom: 1rem;
+            color: #666;
+        }
+
+        .price {
+            font-weight: bold;
+            color: var(--secondary-color);
+            font-size: 1.1rem;
+        }
+
+        /* Gallery */
+        .gallery-section {
+            padding: 4rem 0;
+        }
+
+        .gallery-section h2 {
+            text-align: center;
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item img:hover {
+            transform: scale(1.05);
+        }
+
+        /* Restaurant Info Cards */
+        .restaurant-info {
+            padding: 4rem 0;
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .info-card {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255,255,255,0.15);
+        }
+
+        .info-card h3 {
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .info-card p {
+            margin-bottom: 1.5rem;
+        }
+
+        /* Buttons */
+        .btn-primary,
+        .btn-secondary {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .btn-primary {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--secondary-color);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border-color: white;
+        }
+
+        .btn-secondary:hover {
+            background: white;
+            color: var(--primary-color);
+        }
+
+        /* Footer */
+        .site-footer {
+            background: #333;
+            color: white;
+            padding: 2rem 0;
+        }
+
+        .footer-info h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .footer-contact a {
+            color: white;
+            text-decoration: none;
+            margin-right: 1rem;
+        }
+
+        .footer-contact a:hover {
+            color: var(--accent-color);
+        }
+
+        /* Loading States */
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+            font-style: italic;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                padding: 1rem;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            }
+
+            .nav-menu.active {
+                display: flex;
+            }
+
+            .nav-mobile {
+                display: block;
+            }
+
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .preview-header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .menu-preview-items,
+            .services-preview-items {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar {
+                padding: 1rem;
+            }
+
+            .container {
+                padding: 0 15px;
+            }
+
+            .hero-section {
+                height: 50vh;
+            }
+        }
+    </style>
+</body>
+</html>
