@@ -1,0 +1,103 @@
+{
+  "restaurant": {
+    "name": "Restaurant",
+    "description": "Restaurant, brasserie, bistrot",
+    "pages": ["accueil", "menu", "contact", "reservation"],
+    "sections": {
+      "hero": { "optional": false, "name": "Section d'accueil" },
+      "gallery": { "optional": true, "name": "Galerie de photos" },
+      "menu_du_jour": { "optional": true, "name": "Menu du jour" },
+      "carte_principale": { "optional": true, "name": "Carte principale" },
+      "menu_boissons": { "optional": true, "name": "Menu des boissons" }
+    },
+    "widgets": ["gloria_food"],
+    "theme": "warm",
+    "colors": {
+      "primary": "#d4793c",
+      "secondary": "#8b4513",
+      "accent": "#f4a460",
+      "background": "#fafafa",
+      "text": "#333333"
+    },
+    "fonts": {
+      "primary": "Georgia, serif",
+      "secondary": "Arial, sans-serif"
+    }
+  },
+  "coiffeur": {
+    "name": "Salon de coiffure",
+    "description": "Salon de coiffure, barbier, esthéticienne",
+    "pages": ["accueil", "services", "contact", "rdv"],
+    "sections": {
+      "hero": { "optional": false, "name": "Section d'accueil" },
+      "gallery": { "optional": true, "name": "Galerie de photos" },
+      "services": { "optional": false, "name": "Services proposés" },
+      "team": { "optional": true, "name": "Notre équipe" },
+      "testimonials": { "optional": true, "name": "Témoignages clients" }
+    },
+    "widgets": ["fresha"],
+    "theme": "elegant",
+    "colors": {
+      "primary": "#e91e63",
+      "secondary": "#9c27b0",
+      "accent": "#ff4081",
+      "background": "#f8f9fa",
+      "text": "#333333"
+    },
+    "fonts": {
+      "primary": "Playfair Display, serif",
+      "secondary": "Open Sans, sans-serif"
+    }
+  },
+  "independant": {
+    "name": "Professionnel indépendant",
+    "description": "Coach, formateur, consultant, thérapeute",
+    "pages": ["accueil", "services", "contact", "rdv"],
+    "sections": {
+      "hero": { "optional": false, "name": "Section d'accueil" },
+      "gallery": { "optional": true, "name": "Galerie de photos" },
+      "services": { "optional": false, "name": "Services proposés" },
+      "testimonials": { "optional": true, "name": "Témoignages clients" },
+      "about": { "optional": true, "name": "À propos" },
+      "certifications": { "optional": true, "name": "Certifications" }
+    },
+    "widgets": ["calendly"],
+    "theme": "professional",
+    "colors": {
+      "primary": "#2196f3",
+      "secondary": "#1976d2",
+      "accent": "#03a9f4",
+      "background": "#ffffff",
+      "text": "#333333"
+    },
+    "fonts": {
+      "primary": "Roboto, sans-serif",
+      "secondary": "Open Sans, sans-serif"
+    }
+  },
+  "commerce": {
+    "name": "Commerce",
+    "description": "Boutique, magasin, commerce local",
+    "pages": ["accueil", "produits", "contact"],
+    "sections": {
+      "hero": { "optional": false, "name": "Section d'accueil" },
+      "gallery": { "optional": true, "name": "Galerie de photos" },
+      "products": { "optional": false, "name": "Nos produits" },
+      "categories": { "optional": true, "name": "Catégories" },
+      "promotions": { "optional": true, "name": "Promotions" }
+    },
+    "widgets": [],
+    "theme": "modern",
+    "colors": {
+      "primary": "#4caf50",
+      "secondary": "#388e3c",
+      "accent": "#8bc34a",
+      "background": "#f5f5f5",
+      "text": "#333333"
+    },
+    "fonts": {
+      "primary": "Montserrat, sans-serif",
+      "secondary": "Arial, sans-serif"
+    }
+  }
+}
