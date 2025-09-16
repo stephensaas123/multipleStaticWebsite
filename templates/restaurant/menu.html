@@ -6,7 +6,7 @@
     <title>Menu - {{PAGE_TITLE}}</title>
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/style.css">
-    <meta name="description" content="Découvrez notre menu complet avec nos spécialités, menu du jour et carte des boissons">
+    <meta name="description" content="Découvrez notre menu avec nos spécialités, plats du jour et carte des boissons. Cuisine traditionnelle française">
 </head>
 <body>
     <header class="site-header">
@@ -30,92 +30,109 @@
         <section class="menu-header">
             <div class="container">
                 <h1>Notre Menu</h1>
-                <p class="hero-subtitle" id="menu-description">Découvrez nos spécialités culinaires</p>
+                <p class="hero-subtitle">Découvrez nos spécialités et plats préparés avec passion</p>
             </div>
         </section>
 
-        <!-- Navigation menu -->
-        <nav class="menu-navigation">
+        <!-- Navigation du menu -->
+        <nav class="menu-navigation" id="menu-navigation">
             <div class="container">
-                <div class="menu-nav-buttons" id="menu-nav">
+                <div class="menu-nav-buttons" id="menu-nav-buttons">
                     <!-- Boutons générés dynamiquement -->
                 </div>
             </div>
         </nav>
 
-        <!-- Section Menu du jour -->
-        <section id="menu-du-jour-section" class="section" style="display: none;">
+        <!-- Menu du jour (si activé) -->
+        <section class="menu-section" id="menu-du-jour-section" style="display: none;">
             <div class="container">
-                <div class="menu-category">
-                    <h2 class="section-title">Menu du Jour</h2>
-                    <p class="section-subtitle">Nos suggestions fraîches du jour</p>
-                    
-                    <div class="menu-du-jour">
-                        <h3>Aujourd'hui</h3>
-                        <div class="items-grid" id="menu-du-jour-items">
-                            <div class="loading">Chargement du menu du jour...</div>
-                        </div>
+                <h2 class="section-title">Menu du Jour</h2>
+                <p class="section-subtitle">Nos suggestions fraîches du jour, préparées avec des produits de saison</p>
+                
+                <div class="menu-du-jour-container">
+                    <div class="menu-items" id="menu-du-jour-items">
+                        <div class="loading">Chargement du menu du jour...</div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Section Carte principale -->
-        <section id="carte-principale-section" class="section" style="display: none;">
+        <!-- Carte principale (si activée) -->
+        <section class="menu-section" id="carte-principale-section" style="display: none;">
             <div class="container">
                 <h2 class="section-title">Notre Carte</h2>
-                <p class="section-subtitle">Nos plats signatures et spécialités maison</p>
+                <p class="section-subtitle">Une sélection de plats traditionnels et créatifs, préparés avec des ingrédients de qualité</p>
                 
-                <div id="carte-principale-content">
+                <div class="menu-categories" id="carte-principale-categories">
                     <div class="loading">Chargement de la carte...</div>
                 </div>
             </div>
         </section>
 
-        <!-- Section Menu boissons -->
-        <section id="menu-boissons-section" class="section" style="display: none;">
+        <!-- Menu boissons (si activé) -->
+        <section class="menu-section" id="menu-boissons-section" style="display: none;">
             <div class="container">
-                <h2 class="section-title">Nos Boissons</h2>
-                <p class="section-subtitle">Vins, cocktails et boissons pour accompagner votre repas</p>
+                <h2 class="section-title">Carte des Boissons</h2>
+                <p class="section-subtitle">Vins sélectionnés, boissons chaudes et froides pour accompagner vos repas</p>
                 
-                <div id="menu-boissons-content">
+                <div class="menu-categories" id="menu-boissons-categories">
                     <div class="loading">Chargement de la carte des boissons...</div>
                 </div>
             </div>
         </section>
 
-        <!-- Section d'information si aucun menu -->
-        <section id="no-menu-section" class="section" style="display: none;">
+        <!-- Message si aucun menu n'est configuré -->
+        <section class="no-menu-message" id="no-menu-message" style="display: none;">
             <div class="container">
-                <div style="text-align: center; padding: 4rem 0;">
-                    <h2>Menu en préparation</h2>
-                    <p>Notre menu est actuellement en cours de préparation. N'hésitez pas à nous contacter pour connaître nos spécialités du jour.</p>
-                    <a href="contact.html" class="btn-restaurant" style="margin-top: 2rem;">Nous contacter</a>
+                <div class="message-card">
+                    <h2>Menu en cours de préparation</h2>
+                    <p>Notre équipe met actuellement à jour notre carte. Pour connaître nos plats du jour et spécialités, n'hésitez pas à nous contacter directement.</p>
+                    <div class="message-actions">
+                        <a href="contact.html" class="btn-restaurant">Nous Contacter</a>
+                        <a href="#" id="phone-contact-btn" class="btn-restaurant-outline">Appeler</a>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- Section réservation -->
-        <section class="restaurant-info">
+        <!-- Section informations allergènes et diététique -->
+        <section class="dietary-info">
             <div class="container">
-                <div class="info-cards">
-                    <div class="info-card">
-                        <div class="info-card-icon">🍽️</div>
-                        <h3>Réservation</h3>
-                        <p>Réservez votre table pour déguster nos spécialités</p>
-                        <a href="reservation.html" class="btn-restaurant-outline">Réserver</a>
+                <h2>Informations Diététiques</h2>
+                <div class="dietary-grid">
+                    <div class="dietary-card">
+                        <div class="dietary-icon">🌱</div>
+                        <h3>Options Végétariennes</h3>
+                        <p>Plusieurs plats végétariens disponibles sur notre carte</p>
                     </div>
-                    <div class="info-card">
-                        <div class="info-card-icon">📞</div>
-                        <h3>Commander</h3>
-                        <p>Commandez à emporter ou en livraison</p>
-                        <a href="#" class="btn-restaurant-outline" id="order-btn">Commander</a>
+                    <div class="dietary-card">
+                        <div class="dietary-icon">🚫🌾</div>
+                        <h3>Sans Gluten</h3>
+                        <p>Adaptation possible de certains plats, nous consulter</p>
                     </div>
-                    <div class="info-card">
-                        <div class="info-card-icon">ℹ️</div>
-                        <h3>Contact</h3>
-                        <p>Une question sur nos plats ? Contactez-nous</p>
-                        <a href="contact.html" class="btn-restaurant-outline">Contact</a>
+                    <div class="dietary-card">
+                        <div class="dietary-icon">⚠️</div>
+                        <h3>Allergènes</h3>
+                        <p>Informez-nous de vos allergies, nous nous adapterons</p>
+                    </div>
+                    <div class="dietary-card">
+                        <div class="dietary-icon">👶</div>
+                        <h3>Menu Enfant</h3>
+                        <p>Portions adaptées et plats simples pour les plus jeunes</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Call to action réservation -->
+        <section class="menu-cta">
+            <div class="container">
+                <div class="cta-card">
+                    <h2>Vous avez fait votre choix ?</h2>
+                    <p>Réservez votre table pour déguster nos spécialités dans une ambiance chaleureuse</p>
+                    <div class="cta-actions">
+                        <a href="reservation.html" class="btn-restaurant">Réserver une Table</a>
+                        <a href="contact.html" class="btn-restaurant-outline">Nous Contacter</a>
                     </div>
                 </div>
             </div>
@@ -152,7 +169,6 @@
             constructor() {
                 this.businessData = null;
                 this.activeSection = null;
-                this.availableSections = [];
             }
 
             async initialize() {
@@ -163,11 +179,10 @@
                     // Initialiser la page
                     this.updatePageInfo();
                     this.loadNavigation();
-                    this.loadFooter();
-                    this.checkAvailableSections();
-                    this.generateMenuNavigation();
                     this.loadMenuSections();
-                    this.setupEventListeners();
+                    this.setupMenuNavigation();
+                    this.setupContactLinks();
+                    this.loadFooter();
                     
                 } catch (error) {
                     console.error('Erreur lors de l\'initialisation:', error);
@@ -183,7 +198,6 @@
                     document.getElementById('footer-business-name').textContent = businessName;
                 }
 
-                // Année courante
                 document.getElementById('current-year').textContent = new Date().getFullYear();
             }
 
@@ -201,8 +215,200 @@
                 ).join('');
             }
 
+            loadMenuSections() {
+                const data = this.businessData.data;
+                const availableSections = [];
+
+                // Vérifier et charger le menu du jour
+                if (data.menu_du_jour && data.menu_du_jour.enabled && data.menu_du_jour.items && data.menu_du_jour.items.length > 0) {
+                    this.loadMenuDuJour(data.menu_du_jour);
+                    availableSections.push({ id: 'menu-du-jour', name: 'Menu du Jour' });
+                }
+
+                // Vérifier et charger la carte principale
+                if (data.carte_principale && data.carte_principale.enabled && data.carte_principale.categories && data.carte_principale.categories.length > 0) {
+                    this.loadCartePrincipale(data.carte_principale);
+                    availableSections.push({ id: 'carte-principale', name: 'Notre Carte' });
+                }
+
+                // Vérifier et charger le menu boissons
+                if (data.menu_boissons && data.menu_boissons.enabled && data.menu_boissons.categories && data.menu_boissons.categories.length > 0) {
+                    this.loadMenuBoissons(data.menu_boissons);
+                    availableSections.push({ id: 'menu-boissons', name: 'Boissons' });
+                }
+
+                // Si aucune section disponible, afficher le message
+                if (availableSections.length === 0) {
+                    this.showNoMenuMessage();
+                } else {
+                    this.createMenuNavigation(availableSections);
+                    // Afficher la première section par défaut
+                    this.showMenuSection(availableSections[0].id);
+                }
+            }
+
+            loadMenuDuJour(menuDuJour) {
+                const container = document.getElementById('menu-du-jour-items');
+                const section = document.getElementById('menu-du-jour-section');
+                
+                section.style.display = 'block';
+                
+                if (!menuDuJour.items || menuDuJour.items.length === 0) {
+                    container.innerHTML = '<p>Menu du jour en cours de préparation...</p>';
+                    return;
+                }
+
+                const itemsHTML = menuDuJour.items.map(item => `
+                    <div class="menu-item-card special">
+                        ${item.image_url ? `<img src="${item.image_url}" alt="${item.name}" class="item-image">` : ''}
+                        <div class="item-content">
+                            <h4 class="item-title">${item.name}</h4>
+                            <p class="item-description">${item.description || ''}</p>
+                            <div class="item-price">${item.price}</div>
+                        </div>
+                    </div>
+                `).join('');
+
+                container.innerHTML = itemsHTML;
+            }
+
+            loadCartePrincipale(cartePrincipale) {
+                const container = document.getElementById('carte-principale-categories');
+                const section = document.getElementById('carte-principale-section');
+                
+                section.style.display = 'block';
+                
+                if (!cartePrincipale.categories || cartePrincipale.categories.length === 0) {
+                    container.innerHTML = '<p>Carte en cours de mise à jour...</p>';
+                    return;
+                }
+
+                const categoriesHTML = cartePrincipale.categories.map(category => `
+                    <div class="menu-category">
+                        <h3 class="category-title">${category.name}</h3>
+                        <div class="menu-items">
+                            ${category.items.map(item => `
+                                <div class="menu-item-card">
+                                    ${item.image_url ? `<img src="${item.image_url}" alt="${item.name}" class="item-image">` : ''}
+                                    <div class="item-content">
+                                        <h4 class="item-title">${item.name}</h4>
+                                        <p class="item-description">${item.description || ''}</p>
+                                        <div class="item-price">${item.price}</div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `).join('');
+
+                container.innerHTML = categoriesHTML;
+            }
+
+            loadMenuBoissons(menuBoissons) {
+                const container = document.getElementById('menu-boissons-categories');
+                const section = document.getElementById('menu-boissons-section');
+                
+                section.style.display = 'block';
+                
+                if (!menuBoissons.categories || menuBoissons.categories.length === 0) {
+                    container.innerHTML = '<p>Carte des boissons en cours de mise à jour...</p>';
+                    return;
+                }
+
+                const categoriesHTML = menuBoissons.categories.map(category => `
+                    <div class="menu-category">
+                        <h3 class="category-title">${category.name}</h3>
+                        <div class="menu-items beverages">
+                            ${category.items.map(item => `
+                                <div class="menu-item-card beverage">
+                                    <div class="item-content">
+                                        <h4 class="item-title">${item.name}</h4>
+                                        ${item.description ? `<p class="item-description">${item.description}</p>` : ''}
+                                        <div class="item-price">${item.price}</div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `).join('');
+
+                container.innerHTML = categoriesHTML;
+            }
+
+            createMenuNavigation(sections) {
+                const container = document.getElementById('menu-nav-buttons');
+                const navigation = document.getElementById('menu-navigation');
+                
+                navigation.style.display = 'block';
+                
+                const buttonsHTML = sections.map((section, index) => `
+                    <button class="menu-nav-btn ${index === 0 ? 'active' : ''}" onclick="menuLoader.showMenuSection('${section.id}')">
+                        ${section.name}
+                    </button>
+                `).join('');
+
+                container.innerHTML = buttonsHTML;
+            }
+
+            showMenuSection(sectionId) {
+                // Masquer toutes les sections
+                document.querySelectorAll('.menu-section').forEach(section => {
+                    section.style.display = 'none';
+                });
+
+                // Afficher la section demandée
+                const targetSection = document.getElementById(`${sectionId}-section`);
+                if (targetSection) {
+                    targetSection.style.display = 'block';
+                    this.activeSection = sectionId;
+                }
+
+                // Mettre à jour la navigation
+                document.querySelectorAll('.menu-nav-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                const activeBtn = Array.from(document.querySelectorAll('.menu-nav-btn'))
+                    .find(btn => btn.onclick.toString().includes(sectionId));
+                if (activeBtn) {
+                    activeBtn.classList.add('active');
+                }
+            }
+
+            setupMenuNavigation() {
+                // Rendre la navigation sticky au scroll
+                window.addEventListener('scroll', () => {
+                    const navigation = document.getElementById('menu-navigation');
+                    const header = document.querySelector('.site-header');
+                    
+                    if (navigation && navigation.style.display !== 'none') {
+                        const headerHeight = header.offsetHeight;
+                        if (window.scrollY > headerHeight + 200) {
+                            navigation.classList.add('sticky');
+                            navigation.style.top = `${headerHeight}px`;
+                        } else {
+                            navigation.classList.remove('sticky');
+                        }
+                    }
+                });
+            }
+
+            showNoMenuMessage() {
+                document.getElementById('no-menu-message').style.display = 'block';
+            }
+
+            setupContactLinks() {
+                const basicInfo = this.businessData.data.basic_info;
+                
+                if (basicInfo.phone) {
+                    document.getElementById('phone-contact-btn').href = `tel:${basicInfo.phone}`;
+                    document.getElementById('phone-contact-btn').style.display = 'inline-block';
+                } else {
+                    document.getElementById('phone-contact-btn').style.display = 'none';
+                }
+            }
+
             loadFooter() {
-                // Utiliser la même logique que dans data-loader.js
                 const footerContent = document.getElementById('footer-content');
                 const basicInfo = this.businessData.data.basic_info;
                 
@@ -224,7 +430,7 @@
                     `;
                 }
 
-                if (basicInfo.hours && this.hasOpeningHours(basicInfo.hours)) {
+                if (this.hasOpeningHours(basicInfo.hours)) {
                     footerHTML += `
                         <div class="footer-section">
                             <h3>Horaires</h3>
@@ -242,8 +448,8 @@
 
             renderOpeningHours(hours) {
                 const dayNames = {
-                    monday: 'Lundi', tuesday: 'Mardi', wednesday: 'Mercredi',
-                    thursday: 'Jeudi', friday: 'Vendredi', saturday: 'Samedi', sunday: 'Dimanche'
+                    monday: 'Lun', tuesday: 'Mar', wednesday: 'Mer',
+                    thursday: 'Jeu', friday: 'Ven', saturday: 'Sam', sunday: 'Dim'
                 };
 
                 return Object.entries(hours)
@@ -252,225 +458,16 @@
                     .join('');
             }
 
-            checkAvailableSections() {
-                const sections = ['menu_du_jour', 'carte_principale', 'menu_boissons'];
-                
-                sections.forEach(sectionKey => {
-                    if (this.isSectionEnabled(sectionKey)) {
-                        this.availableSections.push(sectionKey);
-                    }
-                });
-
-                if (this.availableSections.length === 0) {
-                    document.getElementById('no-menu-section').style.display = 'block';
-                }
-            }
-
-            isSectionEnabled(sectionKey) {
-                const section = this.businessData.data[sectionKey];
-                if (!section) return false;
-                
-                if (typeof section.enabled !== 'undefined' && !section.enabled) {
-                    return false;
-                }
-                
-                if (section.items && Array.isArray(section.items)) {
-                    return section.items.length > 0;
-                }
-                
-                if (section.categories && Array.isArray(section.categories)) {
-                    return section.categories.some(cat => cat.items && cat.items.length > 0);
-                }
-                
-                return false;
-            }
-
-            generateMenuNavigation() {
-                if (this.availableSections.length === 0) return;
-
-                const menuNav = document.getElementById('menu-nav');
-                const navButtons = this.availableSections.map(section => {
-                    const names = {
-                        'menu_du_jour': 'Menu du Jour',
-                        'carte_principale': 'Notre Carte',
-                        'menu_boissons': 'Boissons'
-                    };
-                    
-                    return `<button class="menu-nav-btn" data-section="${section}">
-                        ${names[section]}
-                    </button>`;
-                }).join('');
-
-                menuNav.innerHTML = navButtons;
-
-                // Activer la première section
-                if (this.availableSections.length > 0) {
-                    this.showSection(this.availableSections[0]);
-                }
-            }
-
-            async loadMenuSections() {
-                for (const sectionKey of this.availableSections) {
-                    await this.loadMenuSection(sectionKey);
-                }
-            }
-
-            async loadMenuSection(sectionKey) {
-                const sectionData = this.businessData.data[sectionKey];
-                
-                switch (sectionKey) {
-                    case 'menu_du_jour':
-                        await this.renderMenuDuJour(sectionData);
-                        break;
-                    case 'carte_principale':
-                        await this.renderCartePrincipale(sectionData);
-                        break;
-                    case 'menu_boissons':
-                        await this.renderMenuBoissons(sectionData);
-                        break;
-                }
-            }
-
-            async renderMenuDuJour(data) {
-                const container = document.getElementById('menu-du-jour-items');
-                if (!data.items || data.items.length === 0) return;
-
-                const itemsHTML = await Promise.all(
-                    data.items.map(item => this.renderMenuItem(item))
-                );
-
-                container.innerHTML = itemsHTML.join('');
-            }
-
-            async renderCartePrincipale(data) {
-                const container = document.getElementById('carte-principale-content');
-                if (!data.categories || data.categories.length === 0) return;
-
-                let html = '';
-                for (const category of data.categories) {
-                    if (!category.items || category.items.length === 0) continue;
-
-                    html += `
-                        <div class="menu-category">
-                            <h3 class="category-title">${category.name}</h3>
-                            <div class="items-grid">
-                    `;
-
-                    const itemsHTML = await Promise.all(
-                        category.items.map(item => this.renderMenuItem(item))
-                    );
-                    html += itemsHTML.join('');
-
-                    html += '</div></div>';
-                }
-
-                container.innerHTML = html;
-            }
-
-            async renderMenuBoissons(data) {
-                const container = document.getElementById('menu-boissons-content');
-                if (!data.categories || data.categories.length === 0) return;
-
-                let html = '';
-                for (const category of data.categories) {
-                    if (!category.items || category.items.length === 0) continue;
-
-                    html += `
-                        <div class="menu-category">
-                            <h3 class="category-title">${category.name}</h3>
-                            <div class="items-grid">
-                    `;
-
-                    const itemsHTML = await Promise.all(
-                        category.items.map(item => this.renderMenuItem(item, true))
-                    );
-                    html += itemsHTML.join('');
-
-                    html += '</div></div>';
-                }
-
-                container.innerHTML = html;
-            }
-
-            async renderMenuItem(item, isBeverage = false) {
-                let imageHTML = '';
-                if (item.image_url) {
-                    try {
-                        const imageUrl = await window.FirebaseClient.getImageUrl(item.image_url);
-                        imageHTML = `<img src="${imageUrl}" alt="${item.name}" class="item-image" loading="lazy">`;
-                    } catch (error) {
-                        console.warn('Erreur chargement image:', error);
-                    }
-                }
-
-                return `
-                    <div class="item-card">
-                        ${imageHTML}
-                        <div class="item-content">
-                            <h4 class="item-title">${item.name}</h4>
-                            ${item.description ? `<p class="item-description">${item.description}</p>` : ''}
-                            ${item.price ? `<div class="item-price">${item.price}</div>` : ''}
-                        </div>
-                    </div>
-                `;
-            }
-
-            setupEventListeners() {
-                // Navigation entre sections du menu
-                document.addEventListener('click', (e) => {
-                    if (e.target.classList.contains('menu-nav-btn')) {
-                        const section = e.target.dataset.section;
-                        this.showSection(section);
-                    }
-                });
-
-                // Bouton commander
-                const orderBtn = document.getElementById('order-btn');
-                if (this.businessData.data.widgets && this.businessData.data.widgets.gloria_food && this.businessData.data.widgets.gloria_food.enabled) {
-                    orderBtn.onclick = () => window.location.href = 'reservation.html';
-                } else {
-                    orderBtn.onclick = () => window.location.href = 'contact.html';
-                }
-            }
-
-            showSection(sectionKey) {
-                // Masquer toutes les sections
-                document.querySelectorAll('#menu-du-jour-section, #carte-principale-section, #menu-boissons-section')
-                    .forEach(section => section.style.display = 'none');
-                
-                // Désactiver tous les boutons
-                document.querySelectorAll('.menu-nav-btn')
-                    .forEach(btn => btn.classList.remove('active'));
-                
-                // Afficher la section demandée
-                const sectionElement = document.getElementById(`${sectionKey}-section`);
-                if (sectionElement) {
-                    sectionElement.style.display = 'block';
-                }
-                
-                // Activer le bouton correspondant
-                const button = document.querySelector(`[data-section="${sectionKey}"]`);
-                if (button) {
-                    button.classList.add('active');
-                }
-                
-                this.activeSection = sectionKey;
-                
-                // Scroll to top of content
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-
             showErrorMessage() {
-                const errorHTML = `
+                document.querySelector('main').innerHTML = `
                     <div class="container" style="text-align: center; padding: 4rem 0;">
                         <h2>Erreur de chargement</h2>
-                        <p>Impossible de charger le menu. Veuillez réessayer plus tard.</p>
+                        <p>Impossible de charger le menu.</p>
                         <button onclick="location.reload()" class="btn-restaurant" style="margin-top: 2rem;">
                             Recharger la page
                         </button>
                     </div>
                 `;
-                document.querySelector('main').innerHTML = errorHTML;
             }
         }
 
@@ -490,49 +487,10 @@
                 console.error('Erreur d\'initialisation de la page menu:', error);
             }
         });
-
-        // Animations au scroll
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('animate-on-scroll');
-                }
-            });
-        }, observerOptions);
-
-        // Observer les éléments après le chargement
-        setTimeout(() => {
-            document.querySelectorAll('.item-card, .menu-category').forEach(el => {
-                observer.observe(el);
-            });
-        }, 500);
-
-        // Gestion du bouton retour en haut
-        window.addEventListener('scroll', () => {
-            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            if (scrollTop > 300) {
-                if (!document.getElementById('back-to-top')) {
-                    const backToTopBtn = document.createElement('button');
-                    backToTopBtn.id = 'back-to-top';
-                    backToTopBtn.innerHTML = '↑';
-                    backToTopBtn.className = 'back-to-top-btn';
-                    backToTopBtn.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
-                    document.body.appendChild(backToTopBtn);
-                }
-            } else {
-                const btn = document.getElementById('back-to-top');
-                if (btn) btn.remove();
-            }
-        });
     </script>
 
     <style>
-        /* Styles additionnels pour la page menu */
+        /* Styles spécifiques à la page menu */
         .menu-page {
             padding-top: 0;
         }
@@ -553,14 +511,23 @@
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         }
 
+        /* Navigation du menu */
         .menu-navigation {
             background: white;
             padding: 1.5rem 0;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            position: sticky;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 100;
+            display: none;
+        }
+
+        .menu-navigation.sticky {
+            position: fixed;
             top: 80px;
-            z-index: 50;
-            border-bottom: 1px solid var(--border-color);
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(15px);
         }
 
         .menu-nav-buttons {
@@ -574,12 +541,13 @@
             background: transparent;
             border: 2px solid var(--primary-color);
             color: var(--primary-color);
-            padding: 0.75rem 2rem;
-            border-radius: 30px;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
             font-weight: 600;
-            font-size: 0.9rem;
             cursor: pointer;
             transition: all 0.3s ease;
+            font-family: var(--font-secondary);
+            font-size: 0.9rem;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
@@ -589,123 +557,341 @@
             background: var(--primary-color);
             color: white;
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(212, 121, 60, 0.3);
+            box-shadow: var(--shadow-warm);
         }
 
+        /* Sections du menu */
         .menu-section {
-            min-height: 50vh;
+            padding: 5rem 0;
         }
 
-        .back-to-top-btn {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: var(--primary-color);
-            color: white;
-            border: none;
+        .menu-section:nth-child(even) {
+            background: white;
+        }
+
+        .menu-section:nth-child(odd) {
+            background: var(--light-brown);
+        }
+
+        .section-title {
+            font-family: var(--font-primary);
+            font-size: 2.8rem;
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            width: 80px;
+            height: 3px;
+            background: var(--accent-color);
+            transform: translateX(-50%);
+        }
+
+        .section-subtitle {
+            text-align: center;
             font-size: 1.2rem;
-            cursor: pointer;
-            z-index: 1000;
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+            font-style: italic;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Menu du jour spécial */
+        .menu-du-jour-container {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 20px;
+            padding: 3rem;
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu-du-jour-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="white" opacity="0.1"/></svg>');
+            animation: float 20s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes float {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .menu-du-jour-container .menu-items {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Categories de menu */
+        .menu-category {
+            margin-bottom: 4rem;
+        }
+
+        .category-title {
+            font-family: var(--font-primary);
+            font-size: 2.2rem;
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 2.5rem;
+            position: relative;
+        }
+
+        .category-title::before,
+        .category-title::after {
+            content: '◆';
+            color: var(--accent-color);
+            font-size: 1rem;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .category-title::before {
+            left: -40px;
+        }
+
+        .category-title::after {
+            right: -40px;
+        }
+
+        /* Items de menu */
+        .menu-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .menu-items.beverages {
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        }
+
+        .menu-item-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
             box-shadow: var(--shadow-warm);
             transition: all 0.3s ease;
+            border: 1px solid rgba(212, 121, 60, 0.1);
         }
 
-        .back-to-top-btn:hover {
-            background: var(--secondary-color);
-            transform: scale(1.1);
+        .menu-item-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-deep);
         }
 
-        /* Animation d'apparition des éléments */
-        .item-card,
-        .menu-category {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s ease;
+        .menu-item-card.special {
+            border: 2px solid var(--accent-color);
+            background: rgba(255, 255, 255, 0.95);
         }
 
-        .item-card.animate-on-scroll,
-        .menu-category.animate-on-scroll {
-            opacity: 1;
-            transform: translateY(0);
+        .menu-item-card.beverage {
+            min-height: 120px;
+            display: flex;
+            align-items: center;
         }
 
-        /* Responsive amélioré pour la page menu */
-        @media (max-width: 768px) {
-            .menu-header {
-                padding: 4rem 0 3rem;
-            }
-            
-            .menu-header h1 {
-                font-size: 2.5rem;
-            }
-            
-            .menu-navigation {
-                padding: 1rem 0;
-            }
-            
-            .menu-nav-buttons {
-                justify-content: flex-start;
-                overflow-x: auto;
-                padding: 0 1rem;
-                scrollbar-width: none;
-                -ms-overflow-style: none;
-            }
-            
-            .menu-nav-buttons::-webkit-scrollbar {
-                display: none;
-            }
-            
-            .menu-nav-btn {
-                white-space: nowrap;
-                flex-shrink: 0;
-                padding: 0.6rem 1.5rem;
-                font-size: 0.85rem;
-            }
-            
-            .back-to-top-btn {
-                bottom: 1rem;
-                right: 1rem;
-                width: 45px;
-                height: 45px;
-            }
+        .item-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
         }
 
-        @media (max-width: 480px) {
-            .menu-header h1 {
-                font-size: 2rem;
-            }
-            
-            .menu-nav-btn {
-                padding: 0.5rem 1rem;
-                font-size: 0.8rem;
-            }
+        .menu-item-card:hover .item-image {
+            transform: scale(1.05);
         }
 
-        /* Améliorations pour l'accessibilité */
-        .menu-nav-btn:focus {
-            outline: 3px solid rgba(212, 121, 60, 0.5);
-            outline-offset: 2px;
+        .item-content {
+            padding: 1.8rem;
         }
 
-        .back-to-top-btn:focus {
-            outline: 3px solid rgba(212, 121, 60, 0.5);
-            outline-offset: 2px;
+        .menu-item-card.beverage .item-content {
+            padding: 1.5rem;
+            width: 100%;
         }
 
-        /* États de chargement spécifiques */
-        .menu-loading {
+        .item-title {
+            font-family: var(--font-primary);
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 0.8rem;
+        }
+
+        .item-description {
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 1.2rem;
+            font-size: 0.95rem;
+        }
+
+        .item-price {
+            font-family: var(--font-primary);
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+            display: flex;
+            align-items: center;
+        }
+
+        .item-price::before {
+            content: '';
+            margin-right: 0.3rem;
+        }
+
+        .item-price::after {
+            content: '€';
+            font-size: 1rem;
+            margin-left: 0.2rem;
+        }
+
+        /* Message si pas de menu */
+        .no-menu-message {
+            padding: 6rem 0;
+            background: var(--light-brown);
+        }
+
+        .message-card {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+            background: white;
+            padding: 4rem 3rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow-warm);
+        }
+
+        .message-card h2 {
+            font-family: var(--font-primary);
+            color: var(--primary-color);
+            font-size: 2.2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .message-card p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 2.5rem;
+        }
+
+        .message-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Informations diététiques */
+        .dietary-info {
+            padding: 5rem 0;
+            background: white;
+        }
+
+        .dietary-info h2 {
+            font-family: var(--font-primary);
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 3rem;
+            font-size: 2.5rem;
+        }
+
+        .dietary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .dietary-card {
+            background: var(--light-brown);
+            padding: 2.5rem;
+            text-align: center;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(212, 121, 60, 0.1);
+        }
+
+        .dietary-card:hover {
+            background: rgba(212, 121, 60, 0.1);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-warm);
+        }
+
+        .dietary-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .dietary-card h3 {
+            font-family: var(--font-primary);
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .dietary-card p {
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* Call to action */
+        .menu-cta {
+            padding: 5rem 0;
+            background: var(--primary-color);
+        }
+
+        .cta-card {
+            max-width: 700px;
+            margin: 0 auto;
+            text-align: center;
+            color: white;
+        }
+
+        .cta-card h2 {
+            color: white;
+            font-family: var(--font-primary);
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .cta-card p {
+            font-size: 1.2rem;
+            margin-bottom: 2.5rem;
+            line-height: 1.6;
+        }
+
+        .cta-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* États de chargement */
+        .loading {
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 4rem 0;
-            font-style: italic;
+            padding: 3rem;
             color: var(--text-muted);
+            font-style: italic;
         }
 
-        .menu-loading::before {
+        .loading::before {
             content: '';
             width: 20px;
             height: 20px;
@@ -720,27 +906,200 @@
             to { transform: rotate(360deg); }
         }
 
-        /* Améliorations typographiques */
-        .category-title {
-            position: relative;
-            padding: 0 3rem;
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .menu-header h1 {
+                font-size: 2.5rem;
+            }
+
+            .section-title {
+                font-size: 2.2rem;
+            }
+
+            .menu-nav-buttons {
+                justify-content: flex-start;
+                overflow-x: auto;
+                padding: 0 1rem;
+                scrollbar-width: thin;
+            }
+
+            .menu-nav-btn {
+                white-space: nowrap;
+                flex-shrink: 0;
+                font-size: 0.8rem;
+                padding: 0.6rem 1.2rem;
+            }
+
+            .menu-items {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .category-title::before,
+            .category-title::after {
+                display: none;
+            }
+
+            .menu-du-jour-container {
+                padding: 2rem 1rem;
+            }
+
+            .item-content {
+                padding: 1.2rem;
+            }
+
+            .dietary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .message-card {
+                padding: 3rem 2rem;
+            }
+
+            .cta-actions,
+            .message-actions {
+                flex-direction: column;
+                align-items: center;
+            }
         }
 
-        .category-title::before,
-        .category-title::after {
-            font-family: serif;
-            color: var(--accent-color);
-            font-size: 1.2rem;
+        @media (max-width: 480px) {
+            .menu-header {
+                padding: 4rem 0 3rem;
+            }
+
+            .menu-header h1 {
+                font-size: 2rem;
+            }
+
+            .menu-section {
+                padding: 3rem 0;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .category-title {
+                font-size: 1.8rem;
+            }
+
+            .menu-navigation {
+                padding: 1rem 0;
+            }
+
+            .menu-nav-btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.75rem;
+            }
+
+            .dietary-card {
+                padding: 2rem 1.5rem;
+            }
+
+            .item-image {
+                height: 180px;
+            }
+
+            .cta-card h2 {
+                font-size: 2rem;
+            }
+
+            .message-card h2 {
+                font-size: 1.8rem;
+            }
         }
 
-        .item-description {
-            font-style: italic;
-            line-height: 1.6;
+        /* Animations */
+        .menu-item-card,
+        .dietary-card {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s ease forwards;
         }
 
-        .item-price::after {
-            content: ' €';
-            font-size: 0.9em;
+        .menu-item-card:nth-child(2) { animation-delay: 0.1s; }
+        .menu-item-card:nth-child(3) { animation-delay: 0.2s; }
+        .menu-item-card:nth-child(4) { animation-delay: 0.3s; }
+
+        .dietary-card:nth-child(2) { animation-delay: 0.2s; }
+        .dietary-card:nth-child(3) { animation-delay: 0.4s; }
+        .dietary-card:nth-child(4) { animation-delay: 0.6s; }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Print styles */
+        @media print {
+            .site-header,
+            .menu-navigation,
+            .dietary-info,
+            .menu-cta,
+            .site-footer {
+                display: none !important;
+            }
+
+            .menu-header {
+                background: none !important;
+                color: black !important;
+                padding: 2rem 0 !important;
+                margin-top: 0 !important;
+            }
+
+            .menu-header h1 {
+                color: black !important;
+                text-shadow: none !important;
+                font-size: 2rem !important;
+            }
+
+            .menu-section {
+                background: white !important;
+                padding: 2rem 0 !important;
+            }
+
+            .section-title {
+                color: black !important;
+                font-size: 1.5rem !important;
+            }
+
+            .category-title {
+                color: black !important;
+                font-size: 1.3rem !important;
+            }
+
+            .menu-item-card {
+                border: 1px solid #ddd !important;
+                break-inside: avoid;
+                box-shadow: none !important;
+                margin-bottom: 1rem;
+            }
+
+            .item-title {
+                color: black !important;
+                font-size: 1.1rem !important;
+            }
+
+            .item-price {
+                color: black !important;
+                font-weight: bold !important;
+            }
+
+            .item-image {
+                display: none !important;
+            }
+
+            .menu-du-jour-container {
+                background: #f0f0f0 !important;
+                border: 2px solid #333 !important;
+            }
+
+            .menu-du-jour-container::before {
+                display: none !important;
+            }
         }
     </style>
 </body>

@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nos Services - {{PAGE_TITLE}}</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/style.css">
+    <meta name="description" content="Découvrez tous nos services de coiffure : coupes, colorations, soins, coiffages. Expertise et créativité pour sublimer votre style">
+</head>
+<body>
+    <header class="site-header">
+        <nav class="navbar">
+            <div class="container">
+                <div class="nav-brand">
+                    <h1 id="business-name">Chargement...</h1>
+                </div>
+                <ul class="nav-menu" id="nav-menu">
+                    <!-- Navigation générée dynamiquement -->
+                </ul>
+                <div class="nav-mobile">
+                    <button class="nav-toggle" onclick="toggleMobileMenu()">☰</button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="services-page">
+        <!-- Header de la page services -->
+        <section class="services-header">
+            <div class="container">
+                <h1>Nos Services</h1>
+                <p class="hero-subtitle">Une gamme complète de services pour révéler votre beauté naturelle</p>
+            </div>
+        </section>
+
+        <!-- Navigation des services -->
+        <nav class="services-navigation" id="services-navigation">
+            <div class="container">
+                <div class="services-nav-buttons" id="services-nav-buttons">
+                    <!-- Boutons générés dynamiquement -->
+                </div>
+            </div>
+        </nav>
+
+        <!-- Sections des services -->
+        <div id="services-content">
+            <div class="loading">Chargement de nos services...</div>
+        </div>
+
+        <!-- Message si aucun service n'est configuré -->
+        <section class="no-services-message" id="no-services-message" style="display: none;">
+            <div class="container">
+                <div class="message-card">
+                    <h2>Services en cours de mise à jour</h2>
+                    <p>Notre équipe met actuellement à jour notre liste de services. Pour connaître nos prestations et tarifs, n'hésitez pas à nous contacter directement.</p>
+                    <div class="message-actions">
+                        <a href="contact.html" class="btn-coiffeur">Nous Contacter</a>
+                        <a href="#" id="phone-contact-btn" class="btn-coiffeur-outline">Appeler</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section équipe (si disponible) -->
+        <section class="team-section" id="team-section" style="display: none;">
+            <div class="container">
+                <h2 class="section-title">Notre Équipe</h2>
+                <p class="section-subtitle">Des professionnels passionnés à votre service</p>
+                
+                <div class="team-grid" id="team-grid">
+                    <div class="loading">Chargement de l'équipe...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section avantages -->
+        <section class="benefits-section">
+            <div class="container">
+                <h2>Pourquoi Choisir Notre Salon ?</h2>
+                <div class="benefits-grid">
+                    <div class="benefit-card">
+                        <div class="benefit-icon">🎨</div>
+                        <h3>Créativité & Expertise</h3>
+                        <p>Notre équipe de professionnels maîtrise les dernières tendances et techniques de coiffure</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon">🌿</div>
+                        <h3>Produits de Qualité</h3>
+                        <p>Nous utilisons uniquement des produits haut de gamme respectueux de vos cheveux</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon">💆‍♀️</div>
+                        <h3>Expérience Relaxante</h3>
+                        <p>Profitez d'un moment de détente dans notre salon élégant et confortable</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon">⭐</div>
+                        <h3>Service Personnalisé</h3>
+                        <p>Chaque prestation est adaptée à votre personnalité et à vos besoins spécifiques</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section conseils -->
+        <section class="tips-section">
+            <div class="container">
+                <h2>Nos Conseils Beauté</h2>
+                <div class="tips-grid">
+                    <div class="tip-card">
+                        <h3>Entretien Quotidien</h3>
+                        <p>Utilisez un shampoing adapté à votre type de cheveux et évitez les lavages trop fréquents pour préserver l'hydratation naturelle.</p>
+                    </div>
+                    <div class="tip-card">
+                        <h3>Protection Thermique</h3>
+                        <p>Appliquez toujours un produit thermo-protecteur avant d'utiliser des outils chauffants comme le sèche-cheveux ou le lisseur.</p>
+                    </div>
+                    <div class="tip-card">
+                        <h3>Coupe Régulière</h3>
+                        <p>Coupez vos pointes toutes les 6-8 semaines pour maintenir la santé et la forme de votre coiffure.</p>
+                    </div>
+                    <div class="tip-card">
+                        <h3>Soins Profonds</h3>
+                        <p>Offrez-vous un masque nourrissant une fois par semaine pour maintenir l'éclat et la souplesse de vos cheveux.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Call to action rendez-vous -->
+        <section class="services-cta">
+            <div class="container">
+                <div class="cta-card">
+                    <h2>Prêt(e) pour une nouvelle coiffure ?</h2>
+                    <p>Prenez rendez-vous dès maintenant et laissez nos experts sublimer votre style</p>
+                    <div class="cta-actions">
+                        <a href="rdv.html" class="btn-coiffeur">Prendre Rendez-vous</a>
+                        <a href="contact.html" class="btn-coiffeur-outline">Nous Contacter</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content" id="footer-content">
+                <div class="loading">Chargement des informations...</div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <span id="current-year"></span> <span id="footer-business-name"></span>. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-storage-compat.js"></script>
+    
+    <!-- Scripts personnalisés -->
+    <script src="js/firebase-client.js"></script>
+    <script src="js/data-loader.js"></script>
+    <script src="js/utils.js"></script>
+
+    <script>
+        const BUSINESS_ID = '{{BUSINESS_ID}}';
+        const BUSINESS_TYPE = '{{BUSINESS_TYPE}}';
+        const CURRENT_PAGE = 'services';
+        
+        class ServicesPageLoader {
+            constructor() {
+                this.businessData = null;
+                this.activeSection = null;
+            }
+
+            async initialize() {
+                try {
+                    // Charger les données business
+                    this.businessData = await window.FirebaseClient.fetchBusinessData(BUSINESS_ID);
+                    
+                    // Initialiser la page
+                    this.updatePageInfo();
+                    this.loadNavigation();
+                    this.loadServices();
+                    this.loadTeam();
+                    this.setupContactLinks();
+                    this.loadFooter();
+                    
+                } catch (error) {
+                    console.error('Erreur lors de l\'initialisation:', error);
+                    this.showErrorMessage();
+                }
+            }
+
+            updatePageInfo() {
+                const businessName = this.businessData.data.basic_info.name;
+                if (businessName) {
+                    document.title = `Nos Services - ${businessName}`;
+                    document.getElementById('business-name').textContent = businessName;
+                    document.getElementById('footer-business-name').textContent = businessName;
+                }
+
+                document.getElementById('current-year').textContent = new Date().getFullYear();
+            }
+
+            loadNavigation() {
+                const navMenu = document.getElementById('nav-menu');
+                const pages = [
+                    { name: 'Accueil', url: 'index.html', active: false },
+                    { name: 'Services', url: 'services.html', active: true },
+                    { name: 'Rendez-vous', url: 'rdv.html', active: false },
+                    { name: 'Contact', url: 'contact.html', active: false }
+                ];
+
+                navMenu.innerHTML = pages.map(page => 
+                    `<li><a href="${page.url}" class="${page.active ? 'active' : ''}">${page.name}</a></li>`
+                ).join('');
+            }
+
+            loadServices() {
+                const data = this.businessData.data;
+                const servicesContainer = document.getElementById('services-content');
+                
+                if (!data.services || !data.services.enabled || !data.services.categories || data.services.categories.length === 0) {
+                    this.showNoServicesMessage();
+                    return;
+                }
+
+                // Créer la navigation des catégories
+                this.createServicesNavigation(data.services.categories);
+                
+                // Créer le contenu des services
+                let servicesHTML = '';
+                data.services.categories.forEach((category, index) => {
+                    servicesHTML += this.createServiceCategory(category, index === 0);
+                });
+
+                servicesContainer.innerHTML = servicesHTML;
+
+                // Afficher la première catégorie par défaut
+                if (data.services.categories.length > 0) {
+                    this.showServiceCategory(0);
+                }
+            }
+
+            createServicesNavigation(categories) {
+                if (categories.length <= 1) return; // Pas besoin de navigation si une seule catégorie
+
+                const container = document.getElementById('services-nav-buttons');
+                const navigation = document.getElementById('services-navigation');
+                
+                navigation.style.display = 'block';
+                
+                const buttonsHTML = categories.map((category, index) => `
+                    <button class="services-nav-btn ${index === 0 ? 'active' : ''}" onclick="servicesLoader.showServiceCategory(${index})">
+                        ${category.name}
+                    </button>
+                `).join('');
+
+                container.innerHTML = buttonsHTML;
+            }
+
+            createServiceCategory(category, isFirst = false) {
+                const servicesHTML = category.items.map(service => `
+                    <div class="service-card">
+                        ${service.image_url ? `<img src="${service.image_url}" alt="${service.name}" class="service-image">` : ''}
+                        <div class="service-content">
+                            <h4 class="service-title">${service.name}</h4>
+                            <p class="service-description">${service.description || ''}</p>
+                            <div class="service-details">
+                                <div class="service-price">${service.price}€</div>
+                                ${service.duration ? `<div class="service-duration">${service.duration}</div>` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+
+                return `
+                    <section class="service-category" id="category-${category.name.toLowerCase().replace(/[^a-z0-9]/g, '-')}" style="display: ${isFirst ? 'block' : 'none'}">
+                        <div class="container">
+                            <h2 class="category-title">${category.name}</h2>
+                            <div class="services-grid">
+                                ${servicesHTML}
+                            </div>
+                        </div>
+                    </section>
+                `;
+            }
+
+            showServiceCategory(index) {
+                const categories = this.businessData.data.services.categories;
+                if (!categories || index >= categories.length) return;
+
+                // Masquer toutes les catégories
+                document.querySelectorAll('.service-category').forEach(section => {
+                    section.style.display = 'none';
+                });
+
+                // Afficher la catégorie demandée
+                const categoryId = categories[index].name.toLowerCase().replace(/[^a-z0-9]/g, '-');
+                const targetSection = document.getElementById(`category-${categoryId}`);
+                if (targetSection) {
+                    targetSection.style.display = 'block';
+                }
+
+                // Mettre à jour la navigation
+                document.querySelectorAll('.services-nav-btn').forEach((btn, btnIndex) => {
+                    btn.classList.toggle('active', btnIndex === index);
+                });
+            }
+
+            loadTeam() {
+                const data = this.businessData.data;
+                const teamSection = document.getElementById('team-section');
+                const teamGrid = document.getElementById('team-grid');
+                
+                if (!data.team || !data.team.enabled || !data.team.members || data.team.members.length === 0) {
+                    teamSection.style.display = 'none';
+                    return;
+                }
+
+                teamSection.style.display = 'block';
+                
+                const teamHTML = data.team.members.map(member => `
+                    <div class="team-member-card">
+                        ${member.image_url ? `<img src="${member.image_url}" alt="${member.name}" class="member-photo">` : ''}
+                        <h4 class="member-name">${member.name}</h4>
+                        <p class="member-specialty">${member.speciality || ''}</p>
+                        <p class="member-bio">${member.bio || ''}</p>
+                    </div>
+                `).join('');
+
+                teamGrid.innerHTML = teamHTML;
+            }
+
+            showNoServicesMessage() {
+                document.getElementById('no-services-message').style.display = 'block';
+                document.getElementById('services-content').style.display = 'none';
+            }
+
+            setupContactLinks() {
+                const basicInfo = this.businessData.data.basic_info;
+                
+                if (basicInfo.phone) {
+                    document.getElementById('phone-contact-btn').href = `tel:${basicInfo.phone}`;
+                    document.getElementById('phone-contact-btn').style.display = 'inline-block';
+                } else {
+                    document.getElementById('phone-contact-btn').style.display = 'none';
+                }
+            }
+
+            loadFooter() {
+                const footerContent = document.getElementById('footer-content');
+                const basicInfo = this.businessData.data.basic_info;
+                
+                let footerHTML = `
+                    <div class="footer-section">
+                        <h3>${basicInfo.name || 'Notre Salon'}</h3>
+                        ${basicInfo.description ? `<p>${basicInfo.description}</p>` : ''}
+                    </div>
+                `;
+
+                if (basicInfo.address || basicInfo.phone || basicInfo.email) {
+                    footerHTML += `
+                        <div class="footer-section">
+                            <h3>Contact</h3>
+                            ${basicInfo.address ? `<p>📍 ${basicInfo.address}</p>` : ''}
+                            ${basicInfo.phone ? `<p>📞 <a href="tel:${basicInfo.phone}">${basicInfo.phone}</a></p>` : ''}
+                            ${

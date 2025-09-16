@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prendre Rendez-vous - {{PAGE_TITLE}}</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/style.css">
+    <meta name="description" content="Prenez rendez-vous en ligne facilement. Réservation instantanée pour tous nos services de coiffure">
+</head>
+<body>
+    <header class="site-header">
+        <nav class="navbar">
+            <div class="container">
+                <div class="nav-brand">
+                    <h1 id="business-name">Chargement...</h1>
+                </div>
+                <ul class="nav-menu" id="nav-menu">
+                    <!-- Navigation générée dynamiquement -->
+                </ul>
+                <div class="nav-mobile">
+                    <button class="nav-toggle" onclick="toggleMobileMenu()">☰</button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="rdv-page">
+        <!-- Header de la page rendez-vous -->
+        <section class="rdv-header">
+            <div class="container">
+                <h1>Prendre Rendez-vous</h1>
+                <p class="hero-subtitle">Réservez votre créneau en quelques clics et préparez-vous à être sublimé(e)</p>
+            </div>
+        </section>
+
+        <!-- Options de réservation -->
+        <section class="booking-options">
+            <div class="container">
+                <div class="options-grid">
+                    <div class="option-card" id="online-booking">
+                        <div class="option-icon">📱</div>
+                        <h3>Réservation en Ligne</h3>
+                        <p>Consultez nos créneaux disponibles et réservez instantanément</p>
+                        <button class="btn-coiffeur" onclick="showOnlineBooking()">
+                            Réserver en Ligne
+                        </button>
+                    </div>
+                    
+                    <div class="option-card" id="phone-booking">
+                        <div class="option-icon">📞</div>
+                        <h3>Réservation par Téléphone</h3>
+                        <p>Appelez-nous pour un conseil personnalisé et une réservation immédiate</p>
+                        <a href="#" id="phone-link" class="btn-coiffeur">
+                            Appeler Maintenant
+                        </a>
+                    </div>
+                    
+                    <div class="option-card" id="walk-in">
+                        <div class="option-icon">🚶‍♀️</div>
+                        <h3>Sans Rendez-vous</h3>
+                        <p>Venez directement au salon selon nos créneaux disponibles</p>
+                        <a href="#availability" class="btn-coiffeur-outline">
+                            Voir les Horaires
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Widget Fresha (si activé) -->
+        <section class="widget-section" id="fresha-section" style="display: none;">
+            <div class="container">
+                <div class="widget-container">
+                    <h2 class="widget-title">Réservation en Ligne</h2>
+                    <div class="widget-loading" id="fresha-loading">
+                        <div class="loading-spinner"></div>
+                        <p>Chargement du système de réservation...</p>
+                    </div>
+                    <div id="fresha-content" style="display: none;">
+                        <!-- Le widget Fresha sera injecté ici -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Formulaire de contact pour rdv -->
+        <section class="contact-booking-section" id="contact-booking-section" style="display: none;">
+            <div class="container">
+                <div class="form-container">
+                    <h2>Demande de Rendez-vous</h2>
+                    <p class="form-subtitle">Remplissez ce formulaire et nous vous recontacterons rapidement pour confirmer votre rendez-vous</p>
+                    
+                    <form id="booking-form" class="booking-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="booking-name">Nom *</label>
+                                <input type="text" id="booking-name" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="booking-email">Email *</label>
+                                <input type="email" id="booking-email" name="email" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="booking-phone">Téléphone *</label>
+                                <input type="tel" id="booking-phone" name="phone" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="booking-service">Service souhaité</label>
+                                <select id="booking-service" name="service">
+                                    <option value="">Choisir un service</option>
+                                    <!-- Options générées dynamiquement -->
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="booking-date">Date préférée</label>
+                                <input type="date" id="booking-date" name="preferred_date" min="">
+                            </div>
+                            <div class="form-group">
+                                <label for="booking-time">Heure préférée</label>
+                                <select id="booking-time" name="preferred_time">
+                                    <option value="">Choisir un créneau</option>
+                                    <option value="morning">Matin (9h-12h)</option>
+                                    <option value="afternoon">Après-midi (14h-17h)</option>
+                                    <option value="evening">Fin de journée (17h-19h)</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="booking-stylist">Coiffeur/se préféré(e)</label>
+                            <select id="booking-stylist" name="preferred_stylist">
+                                <option value="">Pas de préférence</option>
+                                <!-- Options générées dynamiquement -->
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="booking-comments">Demandes spéciales ou commentaires</label>
+                            <textarea id="booking-comments" name="comments" rows="4" placeholder="Décrivez le style souhaité, mentionnez vos allergies, etc."></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="booking-consent" required>
+                                J'accepte que mes données soient utilisées pour traiter ma demande de rendez-vous
+                            </label>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" class="btn-secondary" onclick="hideContactBooking()">
+                                Annuler
+                            </button>
+                            <button type="submit" class="btn-coiffeur" id="booking-submit">
+                                Envoyer la Demande
+                            </button>
+                        </div>
+                    </form>
+
+                    <div id="booking-messages"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section disponibilités -->
+        <section class="availability-section" id="availability">
+            <div class="container">
+                <h2>Nos Horaires d'Ouverture</h2>
+                
+                <div class="availability-content">
+                    <div class="hours-card">
+                        <h3>Planning de la Semaine</h3>
+                        <div class="hours-table" id="hours-container">
+                            <div class="loading">Chargement des horaires...</div>
+                        </div>
+                    </div>
+                    
+                    <div class="tips-card">
+                        <h3>Conseils pour votre Rendez-vous</h3>
+                        <ul class="tips-list">
+                            <li>
+                                <span class="tip-icon">💡</span>
+                                Arrivez 10 minutes avant votre rendez-vous
+                            </li>
+                            <li>
+                                <span class="tip-icon">🧴</span>
+                                Venez avec les cheveux propres pour les colorations
+                            </li>
+                            <li>
+                                <span class="tip-icon">📱</span>
+                                Apportez des photos de référence si vous avez des idées précises
+                            </li>
+                            <li>
+                                <span class="tip-icon">⏰</span>
+                                Prévoyez suffisamment de temps selon le service choisi
+                            </li>
+                            <li>
+                                <span class="tip-icon">💬</span>
+                                N'hésitez pas à communiquer vos attentes et préoccupations
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section services populaires -->
+        <section class="popular-services">
+            <div class="container">
+                <h2>Services les Plus Demandés</h2>
+                <div class="services-showcase" id="popular-services-grid">
+                    <div class="loading">Chargement des services...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section urgence/contact -->
+        <section class="emergency-booking">
+            <div class="container">
+                <div class="emergency-card">
+                    <h3>Besoin d'un Rendez-vous Urgent ?</h3>
+                    <p>Pour les rendez-vous le jour même ou les demandes spéciales, contactez-nous directement</p>
+                    <div class="emergency-actions">
+                        <a href="contact.html" class="btn-coiffeur-outline">
+                            Nous Contacter
+                        </a>
+                        <a href="#" id="emergency-phone" class="btn-coiffeur">
+                            Appel d'Urgence
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content" id="footer-content">
+                <div class="loading">Chargement des informations...</div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <span id="current-year"></span> <span id="footer-business-name"></span>. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-storage-compat.js"></script>
+    
+    <!-- Scripts personnalisés -->
+    <script src="js/firebase-client.js"></script>
+    <script src="js/data-loader.js"></script>
+    <script src="js/utils.js"></script>
+
+    <script>
+        const BUSINESS_ID = '{{BUSINESS_ID}}';
+        const BUSINESS_TYPE = '{{BUSINESS_TYPE}}';
+        const CURRENT_PAGE = 'rdv';
+        
+        class RdvPageLoader {
+            constructor() {
+                this.businessData = null;
+            }
+
+            async initialize() {
+                try {
+                    // Charger les données business
+                    this.businessData = await window.FirebaseClient.fetchBusinessData(BUSINESS_ID);
+                    
+                    // Initialiser la page
+                    this.updatePageInfo();
+                    this.loadNavigation();
+                    this.setupContactLinks();
+                    this.loadHours();
+                    this.loadPopularServices();
+                    this.setupBookingForm();
+                    this.setupDateInput();
+                    this.loadFooter();
+                    this.checkFreshaWidget();
+                    
+                } catch (error) {
+                    console.error('Erreur lors de l\'initialisation:', error);
+                    this.showErrorMessage();
+                }
+            }
+
+            updatePageInfo() {
+                const businessName = this.businessData.data.basic_info.name;
+                if (businessName) {
+                    document.title = `Prendre Rendez-vous - ${businessName}`;
+                    document.getElementById('business-name').textContent = businessName;
+                    document.getElementById('footer-business-name').textContent = businessName;
+                }
+
+                document.getElementById('current-year').textContent = new Date().getFullYear();
+            }
+
+            loadNavigation() {
+                const navMenu = document.getElementById('nav-menu');
+                const pages = [
+                    { name: 'Accueil', url: 'index.html', active: false },
+                    { name: 'Services', url: 'services.html', active: false },
+                    { name: 'Rendez-vous', url: 'rdv.html', active: true },
+                    { name: 'Contact', url: 'contact.html', active: false }
+                ];
+
+                navMenu.innerHTML = pages.map(page => 
+                    `<li><a href="${page.url}" class="${page.active ? 'active' : ''}">${page.name}</a></li>`
+                ).join('');
+            }
+
+            setupContactLinks() {
+                const basicInfo = this.businessData.data.basic_info;
+                
+                if (basicInfo.phone) {
+                    document.getElementById('phone-link').href = `tel:${basicInfo.phone}`;
+                    document.getElementById('emergency-phone').href = `tel:${basicInfo.phone}`;
+                    document.getElementById('emergency-phone').style.display = 'inline-block';
+                } else {
+                    document.getElementById('phone-booking').style.display = 'none';
+                    document.getElementById('emergency-phone').style.display = 'none';
+                }
+            }
+
+            loadHours() {
+                const container = document.getElementById('hours-container');
+                const hours = this.businessData.data.basic_info.hours;
+                
+                if (!this.hasOpeningHours(hours)) {
+                    container.innerHTML = '<p>Horaires disponibles par téléphone</p>';
+                    return;
+                }
+
+                const dayNames = {
+                    monday: 'Lundi', tuesday: 'Mardi', wednesday: 'Mercredi',
+                    thursday: 'Jeudi', friday: 'Vendredi', saturday: 'Samedi', sunday: 'Dimanche'
+                };
+
+                let tableHTML = '<table><thead><tr><th>Jour</th><th>Horaires</th></tr></thead><tbody>';
+                
+                Object.entries(dayNames).forEach(([key, name]) => {
+                    const time = hours[key] || 'Fermé';
+                    const isToday = this.isToday(key);
+                    const rowClass = isToday ? 'class="today"' : '';
+                    
+                    tableHTML += `<tr ${rowClass}>
+                        <td class="hours-day">${name}${isToday ? ' (Aujourd\'hui)' : ''}</td>
+                        <td class="hours-time">${time}</td>
+                    </tr>`;
+                });
+                
+                tableHTML += '</tbody></table>';
+                container.innerHTML = tableHTML;
+            }
+
+            hasOpeningHours(hours) {
+                return hours && Object.values(hours).some(h => h && h.trim());
+            }
+
+            isToday(dayKey) {
+                const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+                const today = new Date().getDay();
+                return days[today] === dayKey;
+            }
+
+            loadPopularServices() {
+                const container = document.getElementById('popular-services-grid');
+                const data = this.businessData.data;
+                
+                if (!data.services || !data.services.enabled || !data.services.categories) {
+                    container.innerHTML = '<p>Services disponibles sur demande</p>';
+                    return;
+                }
+
+                // Récupérer les premiers services de chaque catégorie
+                const popularServices = [];
+                data.services.categories.forEach(category => {
+                    if (category.items && category.items.length > 0) {
+                        popularServices.push(...category.items.slice(0, 2)); // 2 services par catégorie max
+                    }
+                });
+
+                if (popularServices.length === 0) {
+                    container.innerHTML = '<p>Services disponibles sur demande</p>';
+                    return;
+                }
+
+                // Limiter à 6 services maximum
+                const displayServices = popularServices.slice(0, 6);
+                
+                const servicesHTML = displayServices.map(service => `
+                    <div class="service-showcase-card">
+                        <h4>${service.name}</h4>
+                        <p class="service-price">${service.price}€</p>
+                        ${service.duration ? `<p class="service-duration">${service.duration}</p>` : ''}
+                        <button class="btn-small" onclick="selectService('${service.name}')">
+                            Choisir ce Service
+                        </button>
+                    </div>
+                `).join('');
+
+                container.innerHTML = servicesHTML;
+            }
+
+            setupBookingForm() {
+                // Charger les options de services
+                this.populateServiceOptions();
+                this.populateStylistOptions();
+                
+                const form = document.getElementById('booking-form');
+                form.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    await this.handleBookingSubmit(e);
+                });
+            }
+
+            populateServiceOptions() {
+                const select = document.getElementById('booking-service');
+                const data = this.businessData.data;
+                
+                if (!data.services || !data.services.enabled) return;
+                
+                let optionsHTML = '<option value="">Choisir un service</option>';
+                data.services.categories.forEach(category => {
+                    if (category.items) {
+                        category.items.forEach(service => {
+                            optionsHTML += `<option value="${service.name}">${service.name} - ${service.price}€</option>`;
+                        });
+                    }
+                });
+                
+                select.innerHTML = optionsHTML;
+            }
+
+            populateStylistOptions() {
+                const select = document.getElementById('booking-stylist');
+                const data = this.businessData.data;
+                
+                if (!data.team || !data.team.enabled || !data.team.members) return;
+                
+                let optionsHTML = '<option value="">Pas de préférence</option>';
+                data.team.members.forEach(member => {
+                    optionsHTML += `<option value="${member.name}">${member.name}${member.speciality ? ` - ${member.speciality}` : ''}</option>`;
+                });
+                
+                select.innerHTML = optionsHTML;
+            }
+
+            setupDateInput() {
+                const today = new Date();
+                const minDate = today.toISOString().split('T')[0];
+                document.getElementById('booking-date').setAttribute('min', minDate);
+            }
+
+            async handleBookingSubmit(event) {
+                const submitBtn = document.getElementById('booking-submit');
+                const messagesContainer = document.getElementById('booking-messages');
+                
+                const formData = new FormData(event.target);
+                const bookingData = {
+                    business_id: BUSINESS_ID,
+                    name: formData.get('name'),
+                    email: formData.get('email'),
+                    phone: formData.get('phone'),
+                    service: formData.get('service'),
+                    preferred_date: formData.get('preferred_date'),
+                    preferred_time: formData.get('preferred_time'),
+                    preferred_stylist: formData.get('preferred_stylist'),
+                    comments: formData.get('comments'),
+                    timestamp: new Date(),
+                    status: 'nouveau'
+                };
+
+                this.setSubmitLoading(submitBtn, true);
+                messagesContainer.innerHTML = '';
+
+                try {
+                    await window.FirebaseClient.sendBookingRequest(bookingData);
+                    
+                    messagesContainer.innerHTML = `
+                        <div class="success-message">
+                            ✅ Votre demande de rendez-vous a été envoyée ! Nous vous recontacterons rapidement pour confirmer.
+                        </div>
+                    `;
+                    
+                    event.target.reset();
+                    
+                    setTimeout(() => {
+                        this.hideContactBooking();
+                    }, 3000);
+                    
+                } catch (error) {
+                    console.error('Erreur lors de l\'envoi:', error);
+                    messagesContainer.innerHTML = `
+                        <div class="error-message">
+                            ❌ Erreur lors de l'envoi. Veuillez réessayer ou nous contacter par téléphone.
+                        </div>
+                    `;
+                } finally {
+                    this.setSubmitLoading(submitBtn, false);
+                }
+            }
+
+            setSubmitLoading(button, isLoading) {
+                if (isLoading) {
+                    button.disabled = true;
+                    button.innerHTML = '<span class="spinner"></span> Envoi en cours...';
+                } else {
+                    button.disabled = false;
+                    button.innerHTML = 'Envoyer la Demande';
+                }
+            }
+
+            checkFreshaWidget() {
+                const widgets = this.businessData.data.widgets;
+                if (widgets && widgets.fresha && widgets.fresha.enabled) {
+                    this.loadFreshaWidget(widgets.fresha);
+                } else {
+                    // Afficher le formulaire de contact par défaut
+                    this.showContactBooking();
+                }
+            }
+
+            loadFreshaWidget(config) {
+                const section = document.getElementById('fresha-section');
+                const loading = document.getElementById('fresha-loading');
+                const content = document.getElementById('fresha-content');
+                
+                section.style.display = 'block';
+                
+                // Simuler le chargement du widget
+                setTimeout(() => {
+                    loading.style.display = 'none';
+                    content.style.display = 'block';
+                    
+                    if (config.widget_code) {
+                        content.innerHTML = config.widget_code;
+                    } else {
+                        content.innerHTML = `
+                            <div class="widget-placeholder">
+                                <h3>Widget Fresha</h3>
+                                <p>Système de réservation Fresha configuré</p>
+                                <p>Salon ID: ${config.salon_id || 'Non configuré'}</p>
+                                <p>Le widget de réservation apparaîtra ici une fois configuré.</p>
+                            </div>
+                        `;
+                    }
+                }, 2000);
+            }
+
+            loadFooter() {
+                const footerContent = document.getElementById('footer-content');
+                const basicInfo = this.businessData.data.basic_info;
+                
+                let footerHTML = `
+                    <div class="footer-section">
+                        <h3>${basicInfo.name || 'Notre Salon'}</h3>
+                        ${basicInfo.description ? `<p>${basicInfo.description}</p>` : ''}
+                    </div>
+                `;
+
+                if (basicInfo.address || basicInfo.phone || basicInfo.email) {
+                    footerHTML += `
+                        <div class="footer-section">
+                            <h3>Contact</h3>
+                            ${basicInfo.address ? `<p>📍 ${basicInfo.address}</p>` : ''}
+                            ${basicInfo.phone ? `<p>📞 <a href="tel:${basicInfo.phone}">${basicInfo.phone}</a></p>` : ''}
+                            ${basicInfo.email ? `<p>✉️ <a href="mailto:${basicInfo.email}">${basicInfo.email}</a></p>` : ''}
+                        </div>
+                    `;
+                }
+
+                if (this.hasOpeningHours(basicInfo.hours)) {
+                    footerHTML += `
+                        <div class="footer-section">
+                            <h3>Horaires</h3>
+                            ${this.renderOpeningHours(basicInfo.hours)}
+                        </div>
+                    `;
+                }
+
+                footerContent.innerHTML = footerHTML;
+            }
+
+            renderOpeningHours(hours) {
+                const dayNames = {
+                    monday: 'Lun', tuesday: 'Mar', wednesday: 'Mer',
+                    thursday: 'Jeu', friday: 'Ven', saturday: 'Sam', sunday: 'Dim'
+                };
+
+                return Object.entries(hours)
+                    .filter(([day, time]) => time && time.trim())
+                    .map(([day, time]) => `<p><strong>${dayNames[day]}:</strong> ${time}</p>`)
+                    .join('');
+            }
+
+            showContactBooking() {
+                document.getElementById('contact-booking-section').style.display = 'block';
+            }
+
+            hideContactBooking() {
+                document.getElementById('contact-booking-section').style.display = 'none';
+            }
+
+            showErrorMessage() {
+                document.querySelector('main').innerHTML = `
+                    <div class="container" style="text-align: center; padding: 4rem 0;">
+                        <h2>Erreur de chargement</h2>
+                        <p>Impossible de charger les informations de réservation.</p>
+                        <button onclick="location.reload()" class="btn-coiffeur" style="margin-top: 2rem;">
+                            Recharger la page
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        // Fonctions globales
+        function toggleMobileMenu() {
+            const navMenu = document.getElementById('nav-menu');
+            navMenu.classList.toggle('active');
+        }
+
+        function showOnlineBooking() {
+            const freshaSection = document.getElementById('fresha-section');
+            if (freshaSection && freshaSection.style.display !== 'none') {
+                freshaSection.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                rdvLoader.showContactBooking();
+                document.getElementById('contact-booking-section').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function hideContactBooking() {
+            rdvLoader.hideContactBooking();
+        }
+
+        function selectService(serviceName) {
+            document.getElementById('booking-service').value = serviceName;
+            showOnlineBooking();
+        }
+
+        // Initialisation
+        let rdvLoader;
+        window.addEventListener('DOMContentLoaded', async function() {
+            try {
+                rdvLoader = new RdvPageLoader();
+                await rdvLoader.initialize();
+            } catch (error) {
+                console.error('Erreur d\'initialisation de la page RDV:', error);
+            }
+        });
+    </script>
+
+    <style>
+        /* Styles spécifiques à la page rendez-vous coiffeur */
+        .rdv-page {
+            padding-top: 0;
+        }
+
+        .rdv-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 6rem 0 4rem;
+            text-align: center;
+            margin-top: 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .rdv-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="30" cy="30" r="20" fill="none" stroke="white" stroke-width="0.5" opacity="0.1"/><circle cx="70" cy="70" r="15" fill="none" stroke="white" stroke-width="0.5" opacity="0.1"/></svg>');
+            background-size: 200px 200px;
+            animation: elegantFloat 25s linear infinite;
+        }
+
+        .rdv-header h1 {
+            font-family: var(--font-primary);
+            font-size: 3.5rem;
+            color: white;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+        }
+
+        .rdv-header .hero-subtitle {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Options de réservation */
+        .booking-options {
+            padding: 5rem 0;
+            background: white;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .option-card {
+            background: var(--light-pink);
+            padding: 3rem 2rem;
+            text-align: center;
+            border-radius: 20px;
+            box-shadow: var(--shadow-elegant);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(233, 30, 99, 0.1);
+        }
+
+        .option-card:hover {
+            background: rgba(233, 30, 99, 0.1);
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-deep);
+        }
+
+        .option-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .option-card h3 {
+            font-family: var(--font-primary);
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .option-card p {
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 2rem;
