@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - {{PAGE_TITLE}}</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/style.css">
+    <meta name="description" content="Contactez-nous pour toute question ou information. Adresse, téléphone, horaires d'ouverture">
+</head>
+<body>
+    <header class="site-header">
+        <nav class="navbar">
+            <div class="container">
+                <div class="nav-brand">
+                    <h1 id="business-name">Chargement...</h1>
+                </div>
+                <ul class="nav-menu" id="nav-menu">
+                    <!-- Navigation générée dynamiquement -->
+                </ul>
+                <div class="nav-mobile">
+                    <button class="nav-toggle" onclick="toggleMobileMenu()">☰</button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="contact-page">
+        <!-- Header de la page contact -->
+        <section class="contact-header">
+            <div class="container">
+                <h1>Nous Contacter</h1>
+                <p class="hero-subtitle">N'hésitez pas à nous contacter pour toute question ou prise de rendez-vous</p>
+            </div>
+        </section>
+
+        <!-- Informations de contact principales -->
+        <section class="contact-info-section">
+            <div class="container">
+                <div class="contact-info-grid">
+                    <div class="info-card" id="address-card" style="display: none;">
+                        <div class="info-icon">📍</div>
+                        <h3>Adresse</h3>
+                        <p id="business-address">Chargement...</p>
+                        <a href="#" id="maps-link" target="_blank" class="btn-small">Voir sur la carte</a>
+                    </div>
+
+                    <div class="info-card" id="phone-card" style="display: none;">
+                        <div class="info-icon">📞</div>
+                        <h3>Téléphone</h3>
+                        <p id="business-phone">Chargement...</p>
+                        <a href="#" id="phone-link" class="btn-small">Appeler</a>
+                    </div>
+
+                    <div class="info-card" id="email-card" style="display: none;">
+                        <div class="info-icon">✉️</div>
+                        <h3>Email</h3>
+                        <p id="business-email">Chargement...</p>
+                        <a href="#" id="email-link" class="btn-small">Envoyer un email</a>
+                    </div>
+
+                    <div class="info-card" id="hours-card" style="display: none;">
+                        <div class="info-icon">🕒</div>
+                        <h3>Horaires</h3>
+                        <div id="business-hours">Chargement...</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Formulaire de contact -->
+        <section class="contact-form-section">
+            <div class="container">
+                <div class="contact-form-wrapper">
+                    <div class="form-container">
+                        <h2>Envoyez-nous un Message</h2>
+                        <p class="form-subtitle">Une question ? Une demande spécifique ? Nous vous répondrons rapidement</p>
+                        
+                        <form id="contact-form" class="contact-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="contact-name">Nom *</label>
+                                    <input type="text" id="contact-name" name="name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="contact-email">Email *</label>
+                                    <input type="email" id="contact-email" name="email" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="contact-phone">Téléphone</label>
+                                <input type="tel" id="contact-phone" name="phone">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="contact-subject">Sujet</label>
+                                <select id="contact-subject" name="subject">
+                                    <option value="">Choisir un sujet</option>
+                                    <option value="rdv">Prise de rendez-vous</option>
+                                    <option value="info">Demande d'informations</option>
+                                    <option value="services">Questions sur nos services</option>
+                                    <option value="autre">Autre</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="contact-message">Message *</label>
+                                <textarea id="contact-message" name="message" rows="6" required placeholder="Décrivez votre demande..."></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="contact-consent" required>
+                                    J'accepte que mes données soient utilisées pour traiter ma demande
+                                </label>
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="reset" class="btn-secondary">Effacer</button>
+                                <button type="submit" class="btn-coiffeur" id="contact-submit">
+                                    Envoyer le Message
+                                </button>
+                            </div>
+                        </form>
+
+                        <div id="contact-messages"></div>
+                    </div>
+                    
+                    <!-- Map ou informations supplémentaires -->
+                    <div class="contact-sidebar">
+                        <div class="sidebar-card">
+                            <h3>Informations Pratiques</h3>
+                            <ul class="practical-info">
+                                <li>
+                                    <span class="info-label">Stationnement :</span>
+                                    Places gratuites à proximité
+                                </li>
+                                <li>
+                                    <span class="info-label">Transports :</span>
+                                    Accessible en bus et métro
+                                </li>
+                                <li>
+                                    <span class="info-label">Accessibilité :</span>
+                                    Salon accessible PMR
+                                </li>
+                                <li>
+                                    <span class="info-label">Paiement :</span>
+                                    CB, espèces acceptées
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="sidebar-card">
+                            <h3>Rendez-vous Express</h3>
+                            <p>Pour une prise de rendez-vous rapide :</p>
+                            <div class="quick-actions">
+                                <a href="rdv.html" class="btn-coiffeur">Réserver en Ligne</a>
+                                <a href="#" id="quick-phone" class="btn-coiffeur-outline">Appeler</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section FAQ -->
+        <section class="faq-section">
+            <div class="container">
+                <h2>Questions Fréquentes</h2>
+                <div class="faq-grid">
+                    <div class="faq-item">
+                        <h3 class="faq-question" onclick="toggleFaq(this)">
+                            Comment prendre rendez-vous ?
+                            <span class="faq-toggle">+</span>
+                        </h3>
+                        <div class="faq-answer">
+                            <p>Vous pouvez prendre rendez-vous en ligne via notre système de réservation, par téléphone, ou en vous présentant directement au salon selon nos disponibilités.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question" onclick="toggleFaq(this)">
+                            Puis-je annuler ou reporter mon rendez-vous ?
+                            <span class="faq-toggle">+</span>
+                        </h3>
+                        <div class="faq-answer">
+                            <p>Oui, vous pouvez annuler ou reporter votre rendez-vous en nous prévenant au moins 24h à l'avance par téléphone ou email.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question" onclick="toggleFaq(this)">
+                            Quels moyens de paiement acceptez-vous ?
+                            <span class="faq-toggle">+</span>
+                        </h3>
+                        <div class="faq-answer">
+                            <p>Nous acceptons les paiements par carte bancaire, espèces, et chèques. Les paiements par application mobile sont également possibles.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question" onclick="toggleFaq(this)">
+                            Dois-je venir avec les cheveux propres ?
+                            <span class="faq-toggle">+</span>
+                        </h3>
+                        <div class="faq-answer">
+                            <p>Pour les coupes simples, ce n'est pas obligatoire. Pour les colorations et certains traitements, il est préférable de venir avec des cheveux propres et secs.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content" id="footer-content">
+                <div class="loading">Chargement des informations...</div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <span id="current-year"></span> <span id="footer-business-name"></span>. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-storage-compat.js"></script>
+    
+    <!-- Scripts personnalisés -->
+    <script src="js/firebase-client.js"></script>
+    <script src="js/data-loader.js"></script>
+    <script src="js/utils.js"></script>
+
+    <script>
+        const BUSINESS_ID = '{{BUSINESS_ID}}';
+        const BUSINESS_TYPE = '{{BUSINESS_TYPE}}';
+        const CURRENT_PAGE = 'contact';
+        
+        class ContactPageLoader {
+            constructor() {
+                this.businessData = null;
+            }
+
+            async initialize() {
+                try {
+                    // Charger les données business
+                    this.businessData = await window.FirebaseClient.fetchBusinessData(BUSINESS_ID);
+                    
+                    // Initialiser la page
+                    this.updatePageInfo();
+                    this.loadNavigation();
+                    this.loadContactInfo();
+                    this.setupContactForm();
+                    this.setupQuickActions();
+                    this.loadFooter();
+                    
+                } catch (error) {
+                    console.error('Erreur lors de l\'initialisation:', error);
+                    this.showErrorMessage();
+                }
+            }
+
+            updatePageInfo() {
+                const businessName = this.businessData.data.basic_info.name;
+                if (businessName) {
+                    document.title = `Contact - ${businessName}`;
+                    document.getElementById('business-name').textContent = businessName;
+                    document.getElementById('footer-business-name').textContent = businessName;
+                }
+
+                document.getElementById('current-year').textContent = new Date().getFullYear();
+            }
+
+            loadNavigation() {
+                const navMenu = document.getElementById('nav-menu');
+                const pages = [
+                    { name: 'Accueil', url: 'index.html', active: false },
+                    { name: 'Services', url: 'services.html', active: false },
+                    { name: 'Rendez-vous', url: 'rdv.html', active: false },
+                    { name: 'Contact', url: 'contact.html', active: true }
+                ];
+
+                navMenu.innerHTML = pages.map(page => 
+                    `<li><a href="${page.url}" class="${page.active ? 'active' : ''}">${page.name}</a></li>`
+                ).join('');
+            }
+
+            loadContactInfo() {
+                const basicInfo = this.businessData.data.basic_info;
+                
+                // Adresse
+                if (basicInfo.address) {
+                    document.getElementById('address-card').style.display = 'block';
+                    document.getElementById('business-address').textContent = basicInfo.address;
+                    
+                    const encodedAddress = encodeURIComponent(basicInfo.address);
+                    document.getElementById('maps-link').href = `https://www.google.com/maps/search/?api=1&query=${encodedAddress}`;
+                }
+
+                // Téléphone
+                if (basicInfo.phone) {
+                    document.getElementById('phone-card').style.display = 'block';
+                    document.getElementById('business-phone').textContent = basicInfo.phone;
+                    document.getElementById('phone-link').href = `tel:${basicInfo.phone}`;
+                }
+
+                // Email
+                if (basicInfo.email) {
+                    document.getElementById('email-card').style.display = 'block';
+                    document.getElementById('business-email').textContent = basicInfo.email;
+                    document.getElementById('email-link').href = `mailto:${basicInfo.email}`;
+                }
+
+                // Horaires
+                if (this.hasOpeningHours(basicInfo.hours)) {
+                    document.getElementById('hours-card').style.display = 'block';
+                    document.getElementById('business-hours').innerHTML = this.renderOpeningHours(basicInfo.hours);
+                }
+            }
+
+            hasOpeningHours(hours) {
+                return hours && Object.values(hours).some(h => h && h.trim());
+            }
+
+            renderOpeningHours(hours) {
+                const dayNames = {
+                    monday: 'Lun', tuesday: 'Mar', wednesday: 'Mer',
+                    thursday: 'Jeu', friday: 'Ven', saturday: 'Sam', sunday: 'Dim'
+                };
+
+                return Object.entries(hours)
+                    .map(([day, time]) => {
+                        if (!time || !time.trim()) return '';
+                        const isToday = this.isToday(day);
+                        const className = isToday ? 'today' : '';
+                        return `<div class="hours-day ${className}"><strong>${dayNames[day]}:</strong> ${time}</div>`;
+                    })
+                    .filter(h => h)
+                    .join('');
+            }
+
+            isToday(dayKey) {
+                const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+                const today = new Date().getDay();
+                return days[today] === dayKey;
+            }
+
+            setupContactForm() {
+                const form = document.getElementById('contact-form');
+                form.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    await this.handleContactSubmit(e);
+                });
+            }
+
+            async handleContactSubmit(event) {
+                const submitBtn = document.getElementById('contact-submit');
+                const messagesContainer = document.getElementById('contact-messages');
+                
+                const formData = new FormData(event.target);
+                const contactData = {
+                    business_id: BUSINESS_ID,
+                    name: formData.get('name'),
+                    email: formData.get('email'),
+                    phone: formData.get('phone'),
+                    subject: formData.get('subject'),
+                    message: formData.get('message'),
+                    timestamp: new Date(),
+                    type: 'contact'
+                };
+
+                this.setSubmitLoading(submitBtn, true);
+                messagesContainer.innerHTML = '';
+
+                try {
+                    await window.FirebaseClient.sendContactMessage(contactData);
+                    
+                    messagesContainer.innerHTML = `
+                        <div class="success-message">
+                            ✅ Votre message a été envoyé ! Nous vous répondrons dans les plus brefs délais.
+                        </div>
+                    `;
+                    
+                    event.target.reset();
+                    
+                } catch (error) {
+                    console.error('Erreur lors de l\'envoi:', error);
+                    messagesContainer.innerHTML = `
+                        <div class="error-message">
+                            ❌ Erreur lors de l'envoi. Veuillez réessayer ou nous contacter par téléphone.
+                        </div>
+                    `;
+                } finally {
+                    this.setSubmitLoading(submitBtn, false);
+                }
+            }
+
+            setSubmitLoading(button, isLoading) {
+                if (isLoading) {
+                    button.disabled = true;
+                    button.innerHTML = '<span class="spinner"></span> Envoi en cours...';
+                } else {
+                    button.disabled = false;
+                    button.innerHTML = 'Envoyer le Message';
+                }
+            }
+
+            setupQuickActions() {
+                const basicInfo = this.businessData.data.basic_info;
+                
+                if (basicInfo.phone) {
+                    document.getElementById('quick-phone').href = `tel:${basicInfo.phone}`;
+                    document.getElementById('quick-phone').style.display = 'inline-block';
+                } else {
+                    document.getElementById('quick-phone').style.display = 'none';
+                }
+            }
+
+            loadFooter() {
+                const footerContent = document.getElementById('footer-content');
+                const basicInfo = this.businessData.data.basic_info;
+                
+                let footerHTML = `
+                    <div class="footer-section">
+                        <h3>${basicInfo.name || 'Notre Salon'}</h3>
+                        ${basicInfo.description ? `<p>${basicInfo.description}</p>` : ''}
+                    </div>
+                `;
+
+                if (basicInfo.address || basicInfo.phone || basicInfo.email) {
+                    footerHTML += `
+                        <div class="footer-section">
+                            <h3>Contact</h3>
+                            ${basicInfo.address ? `<p>📍 ${basicInfo.address}</p>` : ''}
+                            ${basicInfo.phone ? `<p>📞 <a href="tel:${basicInfo.phone}">${basicInfo.phone}</a></p>` : ''}
+                            ${basicInfo.email ? `<p>✉️ <a href="mailto:${basicInfo.email}">${basicInfo.email}</a></p>` : ''}
+                        </div>
+                    `;
+                }
+
+                if (this.hasOpeningHours(basicInfo.hours)) {
+                    footerHTML += `
+                        <div class="footer-section">
+                            <h3>Horaires</h3>
+                            ${this.renderOpeningHours(basicInfo.hours)}
+                        </div>
+                    `;
+                }
+
+                footerContent.innerHTML = footerHTML;
+            }
+
+            showErrorMessage() {
+                document.querySelector('main').innerHTML = `
+                    <div class="container" style="text-align: center; padding: 4rem 0;">
+                        <h2>Erreur de chargement</h2>
+                        <p>Impossible de charger les informations de contact.</p>
+                        <button onclick="location.reload()" class="btn-coiffeur" style="margin-top: 2rem;">
+                            Recharger la page
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        // Fonctions globales
+        function toggleMobileMenu() {
+            const navMenu = document.getElementById('nav-menu');
+            navMenu.classList.toggle('active');
+        }
+
+        function toggleFaq(element) {
+            const faqItem = element.parentNode;
+            const answer = faqItem.querySelector('.faq-answer');
+            const toggle = element.querySelector('.faq-toggle');
+            
+            faqItem.classList.toggle('active');
+            
+            if (faqItem.classList.contains('active')) {
+                answer.style.maxHeight = answer.scrollHeight + 'px';
+                toggle.textContent = '−';
+            } else {
+                answer.style.maxHeight = '0';
+                toggle.textContent = '+';
+            }
+        }
+
+        // Initialisation
+        let contactLoader;
+        window.addEventListener('DOMContentLoaded', async function() {
+            try {
+                contactLoader = new ContactPageLoader();
+                await contactLoader.initialize();
+            } catch (error) {
+                console.error('Erreur d\'initialisation de la page contact:', error);
+            }
+        });
+    </script>
+
+    <style>
+        /* Styles spécifiques à la page contact coiffeur */
+        .contact-page {
+            padding-top: 0;
+        }
+
+        .contact-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 6rem 0 4rem;
+            text-align: center;
+            margin-top: 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M20,30 Q50,10 80,30 Q90,50 80,70 Q50,90 20,70 Q10,50 20,30" fill="none" stroke="white" stroke-width="0.5" opacity="0.1"/></svg>');
+            background-size: 150px 150px;
+            animation: elegantFloat 30s linear infinite;
+        }
+
+        .contact-header h1 {
+            font-family: var(--font-primary);
+            font-size: 3.5rem;
+            color: white;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+        }
+
+        .contact-header .hero-subtitle {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Contact Info Section */
+        .contact-info-section {
+            padding: 5rem 0;
+            background: white;
+        }
+
+        .contact-info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .contact-info-grid .info-card {
+            background: var(--light-pink);
+            padding: 3rem 2rem;
+            text-align: center;
+            border-radius: 20px;
+            box-shadow: var(--shadow-elegant);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(233, 30, 99, 0.1);
+        }
+
+        .contact-info-grid .info-card:hover {
+            background: rgba(233, 30, 99, 0.15);
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-deep);
+        }
+
+        .contact-info-grid .info-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .contact-info-grid .info-card h3 {
+            font-family: var(--font-primary);
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .contact-info-grid .info-card p {
+            color: var(--text-color);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+
+        .btn-small {
+            display: inline-block;
+            padding: 0.6rem 1.5rem;
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-small:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(233, 30, 99, 0.3);
+        }
+
+        .hours-day {
+            margin-bottom: 0.5rem;
+            padding: 0.3rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .hours-day.today {
+            background: rgba(233, 30, 99, 0.1);
+            border-radius: 8px;
+            padding: 0.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        /* Contact Form Section */
+        .contact-form-section {
+            padding: 5rem 0;
+            background: var(--light-pink);
+        }
+
+        .contact-form-wrapper {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .form-container {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow-elegant);
+        }
+
+        .form-container h2 {
+            font-family: var(--font-primary);
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 2.2rem;
+            font-weight: 600;
+        }
+
+        .form-subtitle {
+            color: var(--text-muted);
+            margin-bottom: 2.5rem;
+            line-height: 1.6;
+        }
+
+        .contact-form .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            font-family: var(--font-secondary);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.1);
+        }
+
+        .checkbox-label {
+            display: flex !important;
+            align-items: center;
+            gap: 0.8rem;
+            cursor: pointer;
+        }
+
+        .checkbox-label input[type="checkbox"] {
+            width: auto !important;
+            margin: 0;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+        }
+
+        .btn-coiffeur,
+        .btn-secondary {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-coiffeur {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-coiffeur:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-elegant);
+        }
+
+        .btn-coiffeur:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-color);
+            border: 2px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border-color);
+        }
+
+        .btn-coiffeur-outline {
+            background: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-coiffeur-outline:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* Contact Sidebar */
+        .contact-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .sidebar-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow-elegant);
+            border: 1px solid rgba(233, 30, 99, 0.1);
+        }
+
+        .sidebar-card h3 {
+            font-family: var(--font-primary);
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .practical-info {
+            list-style: none;
+            padding: 0;
+        }
+
+        .practical-info li {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: var(--primary-color);
+            min-width: 100px;
+        }
+
+        .quick-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        /* Messages */
+        .success-message,
+        .error-message {
+            padding: 1rem;
+            border-radius: 12px;
+            margin-top: 1rem;
+            font-weight: 500;
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 0.5rem;
+        }
+
+        /* FAQ Section */
+        .faq-section {
+            padding: 5rem 0;
+            background: white;
+        }
+
+        .faq-section h2 {
+            font-family: var(--font-primary);
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 3rem;
+            font-size: 2.5rem;
+            font-weight: 600;
+        }
+
+        .faq-grid {
+            display: grid;
+            gap: 1.5rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: white;
+            border: 2px solid var(--border-color);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:hover {
+            border-color: var(--primary-color);
+        }
+
+        .faq-item.active {
+            border-color: var(--primary-color);
+            box-shadow: var(--shadow-elegant);
+        }
+
+        .faq-question {
+            padding: 1.5rem 2rem;
+            margin: 0;
+            font-family: var(--font-primary);
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.3s ease;
+            font-weight: 600;
+        }
+
+        .faq-question:hover {
+            background: var(--light-pink);
+        }
+
+        .faq-toggle {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent-color);
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item.active .faq-toggle {
+            transform: rotate(45deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            background: var(--light-pink);
+        }
+
+        .faq-answer p {
+            padding: 1.5rem 2rem;
+            margin: 0;
+            line-height: 1.6;
+            color: var(--text-color);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .contact-header h1 {
+                font-size: 2.5rem;
+            }
+
+            .contact-info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-form-wrapper {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .contact-form .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .sidebar-card {
+                padding: 2rem 1.5rem;
+            }
+        }
+
+        @media (max-
