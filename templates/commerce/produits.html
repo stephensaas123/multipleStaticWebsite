@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{PAGE_TITLE}}</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="site-header">
+        <nav class="navbar">
+            <div class="nav-brand">
+                <h1 id="business-name">Chargement...</h1>
+            </div>
+            <ul class="nav-menu" id="nav-menu">
+                <!-- Navigation générée dynamiquement -->
+            </ul>
+            <div class="nav-mobile">
+                <button class="nav-toggle" onclick="toggleMobileMenu()">☰</button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <!-- Section Hero Produits -->
+        <section class="products-hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1>Nos Produits</h1>
+                    <p>Découvrez notre sélection de produits de qualité</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section filtres et recherche -->
+        <section class="filters-section">
+            <div class="container">
+                <div class="filters-container">
+                    <div class="search-box">
+                        <input type="text" id="product-search" placeholder="Rechercher un produit...">
+                    </div>
+                    <div class="filter-buttons" id="category-filters">
+                        <button class="filter-btn active" data-category="all">Tous</button>
+                        <!-- Filtres générés dynamiquement -->
+                    </div>
+                    <div class="view-toggle">
+                        <button class="view-btn active" data-view="grid" title="Vue grille">⊞</button>
+                        <button class="view-btn" data-view="list" title="Vue liste">☰</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section catégories de produits -->
+        <div id="categories-showcase">
+            <!-- Sera générée dynamiquement -->
+        </div>
+
+        <!-- Section produits vedettes -->
+        <section class="featured-products" id="featured-section">
+            <div class="container">
+                <h2>Produits Vedettes</h2>
+                <div class="products-grid" id="featured-products">
+                    <div class="loading">Chargement des produits vedettes...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section tous les produits -->
+        <section class="all-products">
+            <div class="container">
+                <div class="products-header">
+                    <h2>Tous nos Produits</h2>
+                    <div class="sort-options">
+                        <select id="sort-select">
+                            <option value="name">Trier par nom</option>
+                            <option value="price-asc">Prix croissant</option>
+                            <option value="price-desc">Prix décroissant</option>
+                            <option value="category">Catégorie</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="products-grid" id="all-products">
+                    <div class="loading">Chargement des produits...</div>
+                </div>
+                
+                <!-- Pagination -->
+                <div class="pagination" id="pagination">
+                    <!-- Générée dynamiquement -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Section promotions -->
+        <section class="promotions-section" id="promotions-section">
+            <div class="container">
+                <h2>Promotions & Offres Spéciales</h2>
+                <div class="promotions-grid" id="promotions-products">
+                    <div class="loading">Chargement des promotions...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section newsletter produits -->
+        <section class="newsletter-section">
+            <div class="container">
+                <div class="newsletter-content">
+                    <div class="newsletter-text">
+                        <h2>Restez Informé</h2>
+                        <p>Recevez nos dernières nouveautés et offres exclusives</p>
+                    </div>
+                    <form class="newsletter-form" id="newsletter-form">
+                        <input type="email" placeholder="Votre adresse email" required>
+                        <button type="submit" class="btn-primary">S'abonner</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content" id="footer-content">
+                <div class="loading">Chargement des informations de contact...</div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-storage.js"></script>
+    
+    <!-- Scripts personnalisés -->
+    <script src="js/firebase-client.js"></script>
+    <script src="js/data-loader.js"></script>
+    <script src="js/utils.js"></script>
+
+    <script>
+        const BUSINESS_ID = '{{BUSINESS_ID}}';
+        const BUSINESS_TYPE = '{{BUSINESS_TYPE}}';
+        const CURRENT_PAGE = 'produits';
+        
+        let allProducts = [];
+        let filteredProducts = [];
+        let currentPage = 1;
+        const productsPerPage = 12;
+        let currentView = 'grid';
+
+        window.addEventListener('DOMContentLoaded', function() {
+            initializePage();
+            initializeProductsPage();
+        });
+
+        function toggleMobileMenu() {
+            const navMenu = document.getElementById('nav-menu');
+            navMenu.classList.toggle('active');
+        }
+
+        async function initializeProductsPage() {
+            try {
+                // Initialiser les fonctionnalités de la page produits
+                initializeSearch();
+                initializeFilters();
+                initializeViewToggle();
+                initializeSorting();
+                initializeNewsletter();
+                
+                // Charger les produits via DataLoader
+                await loadProductsData();
+                
+            } catch (error) {
+                console.error('Erreur lors de l\'initialisation de la page produits:', error);
+            }
+        }
+
+        async function loadProductsData() {
+            // Cette fonction sera implémentée par le DataLoader
+            // Elle chargera les produits depuis Firebase et appellera displayProducts
+        }
+
+        function initializeSearch() {
+            const searchInput = document.getElementById('product-search');
+            let searchTimeout;
+            
+            searchInput.addEventListener('input', function(e) {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    filterProducts();
+                }, 300);
+            });
+        }
+
+        function initializeFilters() {
+            const filterButtons = document.getElementById('category-filters');
+            
+            filterButtons.addEventListener('click', function(e) {
+                if (e.target.classList.contains('filter-btn')) {
+                    // Retirer la classe active de tous les boutons
+                    filterButtons.querySelectorAll('.filter-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    
+                    // Ajouter la classe active au bouton cliqué
+                    e.target.classList.add('active');
+                    
+                    // Filtrer les produits
+                    filterProducts();
+                }
+            });
+        }
+
+        function initializeViewToggle() {
+            const viewButtons = document.querySelectorAll('.view-btn');
+            const productsContainer = document.getElementById('all-products');
+            
+            viewButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    viewButtons.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    currentView = this.dataset.view;
+                    productsContainer.className = currentView === 'grid' ? 'products-grid' : 'products-list';
+                    
+                    displayProducts();
+                });
+            });
+        }
+
+        function initializeSorting() {
+            const sortSelect = document.getElementById('sort-select');
+            
+            sortSelect.addEventListener('change', function() {
+                sortProducts(this.value);
+                displayProducts();
+            });
+        }
+
+        function initializeNewsletter() {
+            const form = document.getElementById('newsletter-form');
+            
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const email = this.querySelector('input[type="email"]').value;
+                const button = this.querySelector('button');
+                const originalText = button.textContent;
+                
+                button.textContent = 'En cours...';
+                button.disabled = true;
+                
+                // Simuler l'inscription
+                setTimeout(() => {
+                    alert('Merci pour votre inscription !');
+                    this.reset();
+                    button.textContent = originalText;
+                    button.disabled = false;
+                }, 1500);
+            });
+        }
+
+        function filterProducts() {
+            const searchTerm = document.getElementById('product-search').value.toLowerCase();
+            const activeFilter = document.querySelector('.filter-btn.active').dataset.category;
+            
+            filteredProducts = allProducts.filter(product => {
+                const matchesSearch = !searchTerm || 
+                    product.name.toLowerCase().includes(searchTerm) ||
+                    product.description.toLowerCase().includes(searchTerm);
+                    
+                const matchesCategory = activeFilter === 'all' || 
+                    product.category === activeFilter;
+                    
+                return matchesSearch && matchesCategory;
+            });
+            
+            currentPage = 1;
+            displayProducts();
+            updatePagination();
+        }
+
+        function sortProducts(sortBy) {
+            switch(sortBy) {
+                case 'name':
+                    filteredProducts.sort((a, b) => a.name.localeCompare(b.name));
+                    break;
+                case 'price-asc':
+                    filteredProducts.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
+                    break;
+                case 'price-desc':
+                    filteredProducts.sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
+                    break;
+                case 'category':
+                    filteredProducts.sort((a, b) => a.category.localeCompare(b.category));
+                    break;
+            }
+        }
+
+        function displayProducts() {
+            const container = document.getElementById('all-products');
+            const startIndex = (currentPage - 1) * productsPerPage;
+            const endIndex = startIndex + productsPerPage;
+            const productsToShow = filteredProducts.slice(startIndex, endIndex);
+            
+            if (productsToShow.length === 0) {
+                container.innerHTML = '<div class="no-products">Aucun produit trouvé</div>';
+                return;
+            }
+            
+            const productsHTML = productsToShow.map(product => createProductCard(product)).join('');
+            container.innerHTML = productsHTML;
+        }
+
+        function createProductCard(product) {
+            const isPromotion = product.originalPrice && product.originalPrice > product.price;
+            const discount = isPromotion ? 
+                Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100) : 0;
+            
+            return `
+                <div class="product-card-detailed" data-category="${product.category}">
+                    <div class="product-image-container">
+                        <img src="${product.image_url || '/images/placeholder-product.jpg'}" 
+                             alt="${product.name}" class="product-image">
+                        ${isPromotion ? `<div class="product-badge sale">-${discount}%</div>` : ''}
+                        ${product.isNew ? '<div class="product-badge new">Nouveau</div>' : ''}
+                        
+                        <div class="product-actions">
+                            <button class="action-btn" title="Voir détails" onclick="viewProduct('${product.id}')">👁️</button>
+                            <button class="action-btn" title="Ajouter aux favoris" onclick="addToFavorites('${product.id}')">❤️</button>
+                        </div>
+                    </div>
+                    
+                    <div class="product-info">
+                        <div class="product-category">${product.category}</div>
+                        <h3 class="product-name">${product.name}</h3>
+                        <p class="product-description">${product.description}</p>
+                        
+                        <div class="product-price-section">
+                            <div class="product-price">
+                                ${isPromotion ? `<span class="product-price-old">${product.originalPrice}€</span>` : ''}
+                                ${product.price}€
+                            </div>
+                            <div class="product-rating">
+                                ${'★'.repeat(Math.floor(product.rating || 4))}${'☆'.repeat(5 - Math.floor(product.rating || 4))}
+                                <span>(${product.reviews || 0})</span>
+                            </div>
+                        </div>
+                        
+                        <div class="product-availability">
+                            <div class="availability-indicator ${product.inStock ? '' : 'out-of-stock'}"></div>
+                            <span>${product.inStock ? 'En stock' : 'Rupture de stock'}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function updatePagination() {
+            const paginationContainer = document.getElementById('pagination');
+            const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+            
+            if (totalPages <= 1) {
+                paginationContainer.innerHTML = '';
+                return;
+            }
+            
+            let paginationHTML = '';
+            
+            // Bouton précédent
+            paginationHTML += `
+                <button ${currentPage === 1 ? 'disabled' : ''} onclick="changePage(${currentPage - 1})">
+                    ‹ Précédent
+                </button>
+            `;
+            
+            // Numéros de pages
+            for (let i = 1; i <= Math.min(totalPages, 7); i++) {
+                if (i === currentPage) {
+                    paginationHTML += `<button class="active">${i}</button>`;
+                } else {
+                    paginationHTML += `<button onclick="changePage(${i})">${i}</button>`;
+                }
+            }
+            
+            if (totalPages > 7) {
+                paginationHTML += `<span>...</span>`;
+                paginationHTML += `<button onclick="changePage(${totalPages})">${totalPages}</button>`;
+            }
+            
+            // Bouton suivant
+            paginationHTML += `
+                <button ${currentPage === totalPages ? 'disabled' : ''} onclick="changePage(${currentPage + 1})">
+                    Suivant ›
+                </button>
+            `;
+            
+            paginationContainer.innerHTML = paginationHTML;
+        }
+
+        function changePage(page) {
+            currentPage = page;
+            displayProducts();
+            updatePagination();
+            
+            // Scroll vers le haut des produits
+            document.getElementById('all-products').scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'start' 
+            });
+        }
+
+        function viewProduct(productId) {
+            // Fonction pour afficher les détails d'un produit
+            console.log('Voir produit:', productId);
+            // Ici, on pourrait ouvrir une modal ou rediriger vers une page détail
+        }
+
+        function addToFavorites(productId) {
+            // Fonction pour ajouter aux favoris
+            console.log('Ajouter aux favoris:', productId);
+            // Ici, on sauvegarderait dans localStorage ou base de données
+        }
+    </script>
+
+    <style>
+        /* Styles spécifiques à la page produits */
+        :root {
+            --primary-color: {{PRIMARY_COLOR}};
+            --secondary-color: {{SECONDARY_COLOR}};
+            --accent-color: {{ACCENT_COLOR}};
+        }
+
+        /* Hero Produits */
+        .products-hero {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 8rem 0 4rem;
+            text-align: center;
+        }
+
+        .products-hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .products-hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        /* Section filtres */
+        .filters-section {
+            background: white;
+            padding: 2rem 0;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 80px;
+            z-index: 100;
+        }
+
+        .filters-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .search-box {
+            position: relative;
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.8rem 1rem 0.8rem 3rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .search-box input:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+        }
+
+        .search-box::before {
+            content: '🔍';
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1rem;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.6rem 1.2rem;
+            background: var(--light-green);
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .view-btn {
+            padding: 0.8rem;
+            background: white;
+            border: 2px solid var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .view-btn:hover,
+        .view-btn.active {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        /* Section catégories showcase */
+        .categories-showcase {
+            padding: 4rem 0;
+            background: var(--light-green);
+        }
+
+        /* Produits vedettes */
+        .featured-products {
+            padding: 5rem 0;
+            background: white;
+        }
+
+        .featured-products h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 3rem;
+            font-weight: 600;
+        }
+
+        /* Section tous les produits */
+        .all-products {
+            padding: 5rem 0;
+            background: var(--light-green);
+        }
+
+        .products-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
+
+        .products-header h2 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .sort-options select {
+            padding: 0.8rem 1.2rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            background: white;
+            cursor: pointer;
+        }
+
+        /* Grilles de produits */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .products-list {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        /* Messages d'état */
+        .no-products {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #666;
+            font-style: italic;
+            font-size: 1.1rem;
+            grid-column: 1 / -1;
+        }
+
+        /* Section promotions */
+        .promotions-section {
+            padding: 5rem 0;
+            background: white;
+        }
+
+        .promotions-section h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 3rem;
+            font-weight: 600;
+        }
+
+        .promotions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+        }
+
+        /* Section newsletter */
+        .newsletter-section {
+            padding: 4rem 0;
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .newsletter-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 3rem;
+        }
+
+        .newsletter-text h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .newsletter-text p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 1rem;
+            min-width: 400px;
+        }
+
+        .newsletter-form input {
+            flex: 1;
+            padding: 1rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .newsletter-form button {
+            white-space: nowrap;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .products-hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .filters-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-box {
+                min-width: auto;
+            }
+
+            .filter-buttons {
+                justify-content: center;
+            }
+
+            .products-header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .products-header h2 {
+                font-size: 2rem;
+            }
+
+            .newsletter-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .newsletter-form {
+                min-width: auto;
+                width: 100%;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .products-hero {
+                padding: 6rem 0 3rem;
+            }
+
+            .products-hero h1 {
+                font-size: 2rem;
+            }
+
+            .newsletter-form {
+                flex-direction: column;
+            }
+
+            .newsletter-form input {
+                margin-bottom: 1rem;
+            }
+
+            .view-toggle {
+                display: none;
+            }
+        }
+    </style>
+</body>
+</html>

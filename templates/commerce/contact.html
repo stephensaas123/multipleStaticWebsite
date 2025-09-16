@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{PAGE_TITLE}}</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="site-header">
+        <nav class="navbar">
+            <div class="nav-brand">
+                <h1 id="business-name">Chargement...</h1>
+            </div>
+            <ul class="nav-menu" id="nav-menu">
+                <!-- Navigation générée dynamiquement -->
+            </ul>
+            <div class="nav-mobile">
+                <button class="nav-toggle" onclick="toggleMobileMenu()">☰</button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <!-- Section Hero Contact -->
+        <section class="contact-hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1>Nous Contacter</h1>
+                    <p>Nous sommes là pour vous renseigner et vous accompagner</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section informations de contact -->
+        <section class="contact-info-section">
+            <div class="container">
+                <div class="contact-grid">
+                    <!-- Informations principales -->
+                    <div class="contact-details" id="contact-details">
+                        <div class="loading">Chargement des informations de contact...</div>
+                    </div>
+
+                    <!-- Carte et localisation -->
+                    <div class="contact-map">
+                        <div class="map-placeholder" id="map-container">
+                            <div class="map-icon">📍</div>
+                            <p>Plan d'accès</p>
+                            <small>Cliquez pour ouvrir dans Google Maps</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section horaires -->
+        <section class="hours-section">
+            <div class="container">
+                <h2>Nos Horaires d'Ouverture</h2>
+                <div class="hours-grid" id="hours-grid">
+                    <div class="loading">Chargement des horaires...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section formulaire de contact -->
+        <section class="contact-form-section">
+            <div class="container">
+                <div class="form-wrapper">
+                    <h2>Envoyez-nous un Message</h2>
+                    <form id="contact-form" class="contact-form">
+                        <div class="form-group">
+                            <label for="name">Nom *</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email *</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone">Téléphone</label>
+                            <input type="tel" id="phone" name="phone">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="subject">Sujet</label>
+                            <select id="subject" name="subject">
+                                <option value="">Choisissez un sujet</option>
+                                <option value="info">Demande d'information</option>
+                                <option value="product">Question sur nos produits</option>
+                                <option value="order">Commande</option>
+                                <option value="complaint">Réclamation</option>
+                                <option value="other">Autre</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="message">Message *</label>
+                            <textarea id="message" name="message" rows="6" required></textarea>
+                        </div>
+                        
+                        <div class="form-group checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="consent" name="consent" required>
+                                <span class="checkmark"></span>
+                                J'accepte que mes données soient utilisées pour me recontacter *
+                            </label>
+                        </div>
+                        
+                        <button type="submit" class="btn-primary">
+                            <span class="btn-text">Envoyer le Message</span>
+                            <span class="btn-loading" style="display: none;">Envoi en cours...</span>
+                        </button>
+                    </form>
+                    
+                    <div id="form-success" class="success-message" style="display: none;">
+                        ✅ Votre message a été envoyé avec succès ! Nous vous répondrons dans les plus brefs délais.
+                    </div>
+                    
+                    <div id="form-error" class="error-message" style="display: none;">
+                        ❌ Une erreur s'est produite lors de l'envoi. Veuillez réessayer ou nous contacter directement.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section moyens de contact alternatifs -->
+        <section class="contact-alternatives">
+            <div class="container">
+                <h2>Autres Moyens de Contact</h2>
+                <div class="alternatives-grid">
+                    <div class="contact-method">
+                        <div class="method-icon">📞</div>
+                        <h3>Téléphone</h3>
+                        <p>Appelez-nous directement</p>
+                        <a href="#" id="phone-link" class="contact-link">
+                            <span id="phone-display">Chargement...</span>
+                        </a>
+                    </div>
+                    
+                    <div class="contact-method">
+                        <div class="method-icon">✉️</div>
+                        <h3>Email</h3>
+                        <p>Écrivez-nous un email</p>
+                        <a href="#" id="email-link" class="contact-link">
+                            <span id="email-display">Chargement...</span>
+                        </a>
+                    </div>
+                    
+                    <div class="contact-method">
+                        <div class="method-icon">💬</div>
+                        <h3>Réseaux Sociaux</h3>
+                        <p>Suivez notre actualité</p>
+                        <div class="social-links" id="social-links">
+                            <!-- Liens générés dynamiquement -->
+                        </div>
+                    </div>
+                    
+                    <div class="contact-method">
+                        <div class="method-icon">🏪</div>
+                        <h3>En Magasin</h3>
+                        <p>Venez nous voir directement</p>
+                        <p class="visit-info">Conseil personnalisé<br>et démonstration produits</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content" id="footer-content">
+                <div class="loading">Chargement des informations de contact...</div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-storage.js"></script>
+    
+    <!-- Scripts personnalisés -->
+    <script src="js/firebase-client.js"></script>
+    <script src="js/data-loader.js"></script>
+    <script src="js/utils.js"></script>
+
+    <script>
+        const BUSINESS_ID = '{{BUSINESS_ID}}';
+        const BUSINESS_TYPE = '{{BUSINESS_TYPE}}';
+        const CURRENT_PAGE = 'contact';
+        
+        window.addEventListener('DOMContentLoaded', function() {
+            initializePage();
+            initializeContactForm();
+        });
+
+        function toggleMobileMenu() {
+            const navMenu = document.getElementById('nav-menu');
+            navMenu.classList.toggle('active');
+        }
+
+        function initializeContactForm() {
+            const form = document.getElementById('contact-form');
+            const successMessage = document.getElementById('form-success');
+            const errorMessage = document.getElementById('form-error');
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const btnText = submitBtn.querySelector('.btn-text');
+            const btnLoading = submitBtn.querySelector('.btn-loading');
+
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                // Animation du bouton
+                btnText.style.display = 'none';
+                btnLoading.style.display = 'inline';
+                submitBtn.disabled = true;
+                
+                // Masquer les messages précédents
+                successMessage.style.display = 'none';
+                errorMessage.style.display = 'none';
+                
+                try {
+                    // Simuler l'envoi du formulaire
+                    await new Promise(resolve => setTimeout(resolve, 1500));
+                    
+                    // Afficher le message de succès
+                    successMessage.style.display = 'block';
+                    successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    
+                    // Réinitialiser le formulaire
+                    form.reset();
+                    
+                } catch (error) {
+                    console.error('Erreur lors de l\'envoi:', error);
+                    errorMessage.style.display = 'block';
+                    errorMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                } finally {
+                    // Restaurer le bouton
+                    btnText.style.display = 'inline';
+                    btnLoading.style.display = 'none';
+                    submitBtn.disabled = false;
+                }
+            });
+        }
+
+        // Fonction pour ouvrir Google Maps
+        function openGoogleMaps() {
+            // Cette fonction sera implémentée avec les vraies coordonnées
+            const address = encodeURIComponent("Adresse du commerce");
+            window.open(`https://www.google.com/maps/search/${address}`, '_blank');
+        }
+    </script>
+
+    <style>
+        /* Styles spécifiques à la page contact */
+        :root {
+            --primary-color: {{PRIMARY_COLOR}};
+            --secondary-color: {{SECONDARY_COLOR}};
+            --accent-color: {{ACCENT_COLOR}};
+        }
+
+        /* Hero Contact */
+        .contact-hero {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 8rem 0 4rem;
+            text-align: center;
+        }
+
+        .contact-hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .contact-hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        /* Section informations de contact */
+        .contact-info-section {
+            padding: 5rem 0;
+            background: white;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .contact-details {
+            background: var(--light-green);
+            padding: 3rem;
+            border-radius: 12px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(76, 175, 80, 0.1);
+        }
+
+        .contact-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .contact-icon {
+            font-size: 1.5rem;
+            margin-right: 1rem;
+            color: var(--primary-color);
+            min-width: 40px;
+        }
+
+        .contact-info h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .contact-info p {
+            margin: 0;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .contact-map {
+            background: #f8f9fa;
+            border-radius: 12px;
+            overflow: hidden;
+            height: 400px;
+            position: relative;
+        }
+
+        .map-placeholder {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(139, 195, 74, 0.1));
+        }
+
+        .map-placeholder:hover {
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.2), rgba(139, 195, 74, 0.2));
+        }
+
+        .map-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .map-placeholder p {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .map-placeholder small {
+            color: #666;
+        }
+
+        /* Section horaires */
+        .hours-section {
+            padding: 5rem 0;
+            background: var(--light-green);
+        }
+
+        .hours-section h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 3rem;
+            font-weight: 600;
+        }
+
+        .hours-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hours-day {
+            background: white;
+            padding: 2rem 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: var(--shadow-light);
+            transition: transform 0.3s ease;
+            border: 1px solid rgba(76, 175, 80, 0.1);
+        }
+
+        .hours-day:hover {
+            transform: translateY(-5px);
+        }
+
+        .hours-day.today {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+        }
+
+        .day-name {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .day-hours {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .day-hours.closed {
+            color: #999;
+            font-style: italic;
+        }
+
+        /* Section formulaire */
+        .contact-form-section {
+            padding: 6rem 0;
+            background: white;
+        }
+
+        .form-wrapper {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-wrapper h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 3rem;
+            font-weight: 600;
+        }
+
+        .contact-form {
+            background: var(--light-green);
+            padding: 3rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow-light);
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+            cursor: pointer;
+            font-weight: normal;
+            line-height: 1.5;
+        }
+
+        .checkbox-label input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+            transform: scale(1.2);
+        }
+
+        /* Messages de statut */
+        .success-message,
+        .error-message {
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .success-message {
+            background: rgba(76, 175, 80, 0.1);
+            color: var(--success-color);
+            border: 1px solid rgba(76, 175, 80, 0.3);
+        }
+
+        .error-message {
+            background: rgba(244, 67, 54, 0.1);
+            color: #d32f2f;
+            border: 1px solid rgba(244, 67, 54, 0.3);
+        }
+
+        /* Section alternatives */
+        .contact-alternatives {
+            padding: 5rem 0;
+            background: var(--light-green);
+        }
+
+        .contact-alternatives h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 3rem;
+            font-weight: 600;
+        }
+
+        .alternatives-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .contact-method {
+            background: white;
+            padding: 2.5rem;
+            text-align: center;
+            border-radius: 12px;
+            box-shadow: var(--shadow-light);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(76, 175, 80, 0.1);
+        }
+
+        .contact-method:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .method-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-method h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .contact-method p {
+            color: #666;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .contact-link {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .contact-link:hover {
+            color: var(--primary-color);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .social-link {
+            display: inline-block;
+            padding: 0.5rem;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .social-link:hover {
+            background: var(--secondary-color);
+            transform: scale(1.1);
+        }
+
+        .visit-info {
+            font-size: 0.9rem;
+            color: var(--accent-color);
+            font-weight: 500;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .contact-hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .contact-hero p {
+                font-size: 1.1rem;
+            }
+
+            .contact-details {
+                padding: 2rem;
+            }
+
+            .contact-form {
+                padding: 2rem;
+            }
+
+            .alternatives-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hours-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+        }
+
+        @media (max-width: 480px) {
+            .contact-hero {
+                padding: 6rem 0 3rem;
+            }
+
+            .contact-hero h1 {
+                font-size: 2rem;
+            }
+
+            .contact-details {
+                padding: 1.5rem;
+            }
+
+            .contact-form {
+                padding: 1.5rem;
+            }
+
+            .contact-method {
+                padding: 2rem 1.5rem;
+            }
+
+            .hours-day {
+                padding: 1.5rem 1rem;
+            }
+        }
+
+        /* Animations */
+        .contact-method,
+        .hours-day {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        .contact-method:nth-child(2) { animation-delay: 0.2s; }
+        .contact-method:nth-child(3) { animation-delay: 0.4s; }
+        .contact-method:nth-child(4) { animation-delay: 0.6s; }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</body>
+</html>
