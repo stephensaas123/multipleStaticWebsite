@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Réservation - {{PAGE_TITLE}}</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/style.css">
+    <meta name="description" content="Réservez votre table en ligne ou commandez vos plats pour emporter. Réservation rapide et facile">
+</head>
+<body>
+    <header class="site-header">
+        <nav class="navbar">
+            <div class="container">
+                <div class="nav-brand">
+                    <h1 id="business-name">Chargement...</h1>
+                </div>
+                <ul class="nav-menu" id="nav-menu">
+                    <!-- Navigation générée dynamiquement -->
+                </ul>
+                <div class="nav-mobile">
+                    <button class="nav-toggle" onclick="toggleMobileMenu()">☰</button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="reservation-page">
+        <!-- Header de la page réservation -->
+        <section class="reservation-header">
+            <div class="container">
+                <h1>Réservation & Commandes</h1>
+                <p class="hero-subtitle">Réservez votre table ou commandez vos plats préférés</p>
+            </div>
+        </section>
+
+        <!-- Options de réservation -->
+        <section class="reservation-options">
+            <div class="container">
+                <div class="options-grid">
+                    <div class="option-card" id="table-reservation">
+                        <div class="option-icon">🍽️</div>
+                        <h3>Réserver une Table</h3>
+                        <p>Réservez votre table pour dîner sur place dans une ambiance conviviale</p>
+                        <button class="btn-restaurant" onclick="showReservationForm()">
+                            Réserver Maintenant
+                        </button>
+                    </div>
+                    
+                    <div class="option-card" id="takeaway-order">
+                        <div class="option-icon">🥡</div>
+                        <h3>Commander à Emporter</h3>
+                        <p>Commandez vos plats préférés et venez les récupérer au restaurant</p>
+                        <button class="btn-restaurant" onclick="showOrderOptions()">
+                            Commander
+                        </button>
+                    </div>
+                    
+                    <div class="option-card" id="phone-contact">
+                        <div class="option-icon">📞</div>
+                        <h3>Réservation Téléphonique</h3>
+                        <p>Appelez-nous directement pour une réservation personnalisée</p>
+                        <a href="#" id="phone-link" class="btn-restaurant">
+                            Appeler
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Formulaire de réservation de table -->
+        <section class="reservation-form-section" id="reservation-form-section" style="display: none;">
+            <div class="container">
+                <div class="form-container">
+                    <h2>Réserver une Table</h2>
+                    
+                    <form id="reservation-form" class="reservation-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="res-name">Nom *</label>
+                                <input type="text" id="res-name" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="res-email">Email *</label>
+                                <input type="email" id="res-email" name="email" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="res-phone">Téléphone *</label>
+                                <input type="tel" id="res-phone" name="phone" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="res-guests">Nombre de personnes *</label>
+                                <select id="res-guests" name="guests" required>
+                                    <option value="">Choisir</option>
+                                    <option value="1">1 personne</option>
+                                    <option value="2">2 personnes</option>
+                                    <option value="3">3 personnes</option>
+                                    <option value="4">4 personnes</option>
+                                    <option value="5">5 personnes</option>
+                                    <option value="6">6 personnes</option>
+                                    <option value="7">7 personnes</option>
+                                    <option value="8">8 personnes</option>
+                                    <option value="more">Plus de 8 (nous contacter)</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="res-date">Date *</label>
+                                <input type="date" id="res-date" name="date" required min="">
+                            </div>
+                            <div class="form-group">
+                                <label for="res-time">Heure souhaitée *</label>
+                                <select id="res-time" name="time" required>
+                                    <option value="">Choisir l'heure</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="res-occasion">Occasion spéciale</label>
+                            <select id="res-occasion" name="occasion">
+                                <option value="">Aucune occasion particulière</option>
+                                <option value="anniversary">Anniversaire</option>
+                                <option value="birthday">Fête d'anniversaire</option>
+                                <option value="business">Repas d'affaires</option>
+                                <option value="romantic">Dîner romantique</option>
+                                <option value="family">Réunion de famille</option>
+                                <option value="celebration">Célébration</option>
+                                <option value="other">Autre</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="res-comments">Commentaires ou demandes spéciales</label>
+                            <textarea id="res-comments" name="comments" rows="3" placeholder="Allergies, préférences de table, etc."></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="res-consent" required>
+                                J'accepte que mes données soient utilisées pour traiter ma réservation
+                            </label>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" class="btn-secondary" onclick="hideReservationForm()">
+                                Annuler
+                            </button>
+                            <button type="submit" class="btn-restaurant" id="reservation-submit">
+                                Confirmer la Réservation
+                            </button>
+                        </div>
+                    </form>
+
+                    <div id="reservation-messages"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Widget GloriaFood (si activé) -->
+        <section class="widget-section" id="gloria-food-section" style="display: none;">
+            <div class="container">
+                <div class="widget-container">
+                    <h2 class="widget-title">Commander en Ligne</h2>
+                    <div class="widget-loading" id="gloria-food-loading">
+                        Chargement du système de commande...
+                    </div>
+                    <div id="gloria-food-content" style="display: none;">
+                        <!-- Le widget GloriaFood sera injecté ici -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Informations utiles -->
+        <section class="reservation-info">
+            <div class="container">
+                <h2>Informations Pratiques</h2>
+                
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-icon">⏰</div>
+                        <h3>Horaires de Service</h3>
+                        <div id="service-hours">
+                            <div class="loading">Chargement des horaires...</div>
+                        </div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-icon">📋</div>
+                        <h3>Politique de Réservation</h3>
+                        <ul>
+                            <li>Réservation recommandée, surtout le weekend</li>
+                            <li>Confirmation par email ou téléphone</li>
+                            <li>Modification possible jusqu'à 2h avant</li>
+                            <li>Table maintenue 15 minutes après l'heure</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-icon">🍷</div>
+                        <h3>Services Disponibles</h3>
+                        <ul>
+                            <li>Menu végétarien et sans gluten</li>
+                            <li>Adaptation pour allergies alimentaires</li>
+                            <li>Groupes et événements privés</li>
+                            <li>Vente à emporter</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact d'urgence -->
+        <section class="emergency-contact">
+            <div class="container">
+                <div class="emergency-card">
+                    <h3>Besoin d'aide ?</h3>
+                    <p>Pour toute question sur votre réservation ou pour des demandes spéciales</p>
+                    <div class="emergency-actions">
+                        <a href="contact.html" class="btn-restaurant-outline">
+                            Nous Contacter
+                        </a>
+                        <a href="#" id="emergency-phone" class="btn-restaurant">
+                            Appeler Maintenant
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content" id="footer-content">
+                <div class="loading">Chargement des informations...</div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <span id="current-year"></span> <span id="footer-business-name"></span>. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-storage-compat.js"></script>
+    
+    <!-- Scripts personnalisés -->
+    <script src="js/firebase-client.js"></script>
+    <script src="js/data-loader.js"></script>
+    <script src="js/utils.js"></script>
+
+    <script>
+        const BUSINESS_ID = '{{BUSINESS_ID}}';
+        const BUSINESS_TYPE = '{{BUSINESS_TYPE}}';
+        const CURRENT_PAGE = 'reservation';
+        
+        class ReservationPageLoader {
+            constructor() {
+                this.businessData = null;
+            }
+
+            async initialize() {
+                try {
+                    // Charger les données business
+                    this.businessData = await window.FirebaseClient.fetchBusinessData(BUSINESS_ID);
+                    
+                    // Initialiser la page
+                    this.updatePageInfo();
+                    this.loadNavigation();
+                    this.setupContactLinks();
+                    this.loadServiceHours();
+                    this.setupDateTimeInputs();
+                    this.loadFooter();
+                    this.setupReservationForm();
+                    this.checkGloriaFoodWidget();
+                    
+                } catch (error) {
+                    console.error('Erreur lors de l\'initialisation:', error);
+                    this.showErrorMessage();
+                }
+            }
+
+            updatePageInfo() {
+                const businessName = this.businessData.data.basic_info.name;
+                if (businessName) {
+                    document.title = `Réservation - ${businessName}`;
+                    document.getElementById('business-name').textContent = businessName;
+                    document.getElementById('footer-business-name').textContent = businessName;
+                }
+
+                document.getElementById('current-year').textContent = new Date().getFullYear();
+            }
+
+            loadNavigation() {
+                const navMenu = document.getElementById('nav-menu');
+                const pages = [
+                    { name: 'Accueil', url: 'index.html', active: false },
+                    { name: 'Menu', url: 'menu.html', active: false },
+                    { name: 'Réserver', url: 'reservation.html', active: true },
+                    { name: 'Contact', url: 'contact.html', active: false }
+                ];
+
+                navMenu.innerHTML = pages.map(page => 
+                    `<li><a href="${page.url}" class="${page.active ? 'active' : ''}">${page.name}</a></li>`
+                ).join('');
+            }
+
+            setupContactLinks() {
+                const basicInfo = this.businessData.data.basic_info;
+                
+                if (basicInfo.phone) {
+                    document.getElementById('phone-link').href = `tel:${basicInfo.phone}`;
+                    document.getElementById('emergency-phone').href = `tel:${basicInfo.phone}`;
+                    document.getElementById('emergency-phone').style.display = 'inline-block';
+                } else {
+                    document.getElementById('phone-contact').style.display = 'none';
+                    document.getElementById('emergency-phone').style.display = 'none';
+                }
+            }
+
+            loadServiceHours() {
+                const container = document.getElementById('service-hours');
+                const hours = this.businessData.data.basic_info.hours;
+                
+                if (!this.hasOpeningHours(hours)) {
+                    container.innerHTML = '<p>Horaires disponibles par téléphone</p>';
+                    return;
+                }
+
+                const dayNames = {
+                    monday: 'Lun', tuesday: 'Mar', wednesday: 'Mer',
+                    thursday: 'Jeu', friday: 'Ven', saturday: 'Sam', sunday: 'Dim'
+                };
+
+                let hoursHTML = '<div class="hours-compact">';
+                Object.entries(hours)
+                    .filter(([day, time]) => time && time.trim())
+                    .forEach(([day, time]) => {
+                        hoursHTML += `<div class="hour-item">
+                            <strong>${dayNames[day]}:</strong> ${time}
+                        </div>`;
+                    });
+                hoursHTML += '</div>';
+
+                container.innerHTML = hoursHTML;
+            }
+
+            hasOpeningHours(hours) {
+                return hours && Object.values(hours).some(h => h && h.trim());
+            }
+
+            setupDateTimeInputs() {
+                // Définir la date minimum (aujourd'hui)
+                const today = new Date();
+                const minDate = today.toISOString().split('T')[0];
+                document.getElementById('res-date').setAttribute('min', minDate);
+                
+                // Générer les créneaux horaires
+                this.generateTimeSlots();
+                
+                // Écouter les changements de date pour adapter les horaires
+                document.getElementById('res-date').addEventListener('change', () => {
+                    this.updateAvailableTimeSlots();
+                });
+            }
+
+            generateTimeSlots() {
+                const timeSelect = document.getElementById('res-time');
+                const slots = [];
+                
+                // Créneaux de midi (12h-14h)
+                for (let hour = 12; hour <= 14; hour++) {
+                    for (let min of ['00', '30']) {
+                        if (hour === 14 && min === '30') break;
+                        slots.push(`${hour.toString().padStart(2, '0')}:${min}`);
+                    }
+                }
+                
+                // Créneaux du soir (19h-21h30)
+                for (let

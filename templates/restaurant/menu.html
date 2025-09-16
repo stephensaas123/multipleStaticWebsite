@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu - {{PAGE_TITLE}}</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/style.css">
+    <meta name="description" content="Découvrez notre menu complet avec nos spécialités, menu du jour et carte des boissons">
+</head>
+<body>
+    <header class="site-header">
+        <nav class="navbar">
+            <div class="container">
+                <div class="nav-brand">
+                    <h1 id="business-name">Chargement...</h1>
+                </div>
+                <ul class="nav-menu" id="nav-menu">
+                    <!-- Navigation générée dynamiquement -->
+                </ul>
+                <div class="nav-mobile">
+                    <button class="nav-toggle" onclick="toggleMobileMenu()">☰</button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="menu-page">
+        <!-- Header de la page menu -->
+        <section class="menu-header">
+            <div class="container">
+                <h1>Notre Menu</h1>
+                <p class="hero-subtitle" id="menu-description">Découvrez nos spécialités culinaires</p>
+            </div>
+        </section>
+
+        <!-- Navigation menu -->
+        <nav class="menu-navigation">
+            <div class="container">
+                <div class="menu-nav-buttons" id="menu-nav">
+                    <!-- Boutons générés dynamiquement -->
+                </div>
+            </div>
+        </nav>
+
+        <!-- Section Menu du jour -->
+        <section id="menu-du-jour-section" class="section" style="display: none;">
+            <div class="container">
+                <div class="menu-category">
+                    <h2 class="section-title">Menu du Jour</h2>
+                    <p class="section-subtitle">Nos suggestions fraîches du jour</p>
+                    
+                    <div class="menu-du-jour">
+                        <h3>Aujourd'hui</h3>
+                        <div class="items-grid" id="menu-du-jour-items">
+                            <div class="loading">Chargement du menu du jour...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Carte principale -->
+        <section id="carte-principale-section" class="section" style="display: none;">
+            <div class="container">
+                <h2 class="section-title">Notre Carte</h2>
+                <p class="section-subtitle">Nos plats signatures et spécialités maison</p>
+                
+                <div id="carte-principale-content">
+                    <div class="loading">Chargement de la carte...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Menu boissons -->
+        <section id="menu-boissons-section" class="section" style="display: none;">
+            <div class="container">
+                <h2 class="section-title">Nos Boissons</h2>
+                <p class="section-subtitle">Vins, cocktails et boissons pour accompagner votre repas</p>
+                
+                <div id="menu-boissons-content">
+                    <div class="loading">Chargement de la carte des boissons...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section d'information si aucun menu -->
+        <section id="no-menu-section" class="section" style="display: none;">
+            <div class="container">
+                <div style="text-align: center; padding: 4rem 0;">
+                    <h2>Menu en préparation</h2>
+                    <p>Notre menu est actuellement en cours de préparation. N'hésitez pas à nous contacter pour connaître nos spécialités du jour.</p>
+                    <a href="contact.html" class="btn-restaurant" style="margin-top: 2rem;">Nous contacter</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section réservation -->
+        <section class="restaurant-info">
+            <div class="container">
+                <div class="info-cards">
+                    <div class="info-card">
+                        <div class="info-card-icon">🍽️</div>
+                        <h3>Réservation</h3>
+                        <p>Réservez votre table pour déguster nos spécialités</p>
+                        <a href="reservation.html" class="btn-restaurant-outline">Réserver</a>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-card-icon">📞</div>
+                        <h3>Commander</h3>
+                        <p>Commandez à emporter ou en livraison</p>
+                        <a href="#" class="btn-restaurant-outline" id="order-btn">Commander</a>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-card-icon">ℹ️</div>
+                        <h3>Contact</h3>
+                        <p>Une question sur nos plats ? Contactez-nous</p>
+                        <a href="contact.html" class="btn-restaurant-outline">Contact</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content" id="footer-content">
+                <div class="loading">Chargement des informations...</div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <span id="current-year"></span> <span id="footer-business-name"></span>. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-storage-compat.js"></script>
+    
+    <!-- Scripts personnalisés -->
+    <script src="js/firebase-client.js"></script>
+    <script src="js/data-loader.js"></script>
+    <script src="js/utils.js"></script>
+
+    <script>
+        const BUSINESS_ID = '{{BUSINESS_ID}}';
+        const BUSINESS_TYPE = '{{BUSINESS_TYPE}}';
+        const CURRENT_PAGE = 'menu';
+        
+        class MenuPageLoader {
+            constructor() {
+                this.businessData = null;
+                this.activeSection = null;
+                this.availableSections = [];
+            }
+
+            async initialize() {
+                try {
+                    // Charger les données business
+                    this.businessData = await window.FirebaseClient.fetchBusinessData(BUSINESS_ID);
+                    
+                    // Initialiser la page
+                    this.updatePageInfo();
+                    this.loadNavigation();
+                    this.loadFooter();
+                    this.checkAvailableSections();
+                    this.generateMenuNavigation();
+                    this.loadMenuSections();
+                    this.setupEventListeners();
+                    
+                } catch (error) {
+                    console.error('Erreur lors de l\'initialisation:', error);
+                    this.showErrorMessage();
+                }
+            }
+
+            updatePageInfo() {
+                const businessName = this.businessData.data.basic_info.name;
+                if (businessName) {
+                    document.title = `Menu - ${businessName}`;
+                    document.getElementById('business-name').textContent = businessName;
+                    document.getElementById('footer-business-name').textContent = businessName;
+                }
+
+                // Année courante
+                document.getElementById('current-year').textContent = new Date().getFullYear();
+            }
+
+            loadNavigation() {
+                const navMenu = document.getElementById('nav-menu');
+                const pages = [
+                    { name: 'Accueil', url: 'index.html', active: false },
+                    { name: 'Menu', url: 'menu.html', active: true },
+                    { name: 'Réserver', url: 'reservation.html', active: false },
+                    { name: 'Contact', url: 'contact.html', active: false }
+                ];
+
+                navMenu.innerHTML = pages.map(page => 
+                    `<li><a href="${page.url}" class="${page.active ? 'active' : ''}">${page.name}</a></li>`
+                ).join('');
+            }
+
+            loadFooter() {
+                // Utiliser la même logique que dans data-loader.js
+                const footerContent = document.getElementById('footer-content');
+                const basicInfo = this.businessData.data.basic_info;
+                
+                let footerHTML = `
+                    <div class="footer-section">
+                        <h3>${basicInfo.name || 'Notre Restaurant'}</h3>
+                        ${basicInfo.description ? `<p>${basicInfo.description}</p>` : ''}
+                    </div>
+                `;
+
+                if (basicInfo.address || basicInfo.phone || basicInfo.email) {
+                    footerHTML += `
+                        <div class="footer-section">
+                            <h3>Contact</h3>
+                            ${basicInfo.address ? `<p>📍 ${basicInfo.address}</p>` : ''}
+                            ${basicInfo.phone ? `<p>📞 <a href="tel:${basicInfo.phone}">${basicInfo.phone}</a></p>` : ''}
+                            ${basicInfo.email ? `<p>✉️ <a href="mailto:${basicInfo.email}">${basicInfo.email}</a></p>` : ''}
+                        </div>
+                    `;
+                }
+
+                if (basicInfo.hours && this.hasOpeningHours(basicInfo.hours)) {
+                    footerHTML += `
+                        <div class="footer-section">
+                            <h3>Horaires</h3>
+                            ${this.renderOpeningHours(basicInfo.hours)}
+                        </div>
+                    `;
+                }
+
+                footerContent.innerHTML = footerHTML;
+            }
+
+            hasOpeningHours(hours) {
+                return hours && Object.values(hours).some(h => h && h.trim());
+            }
+
+            renderOpeningHours(hours) {
+                const dayNames = {
+                    monday: 'Lundi', tuesday: 'Mardi', wednesday: 'Mercredi',
+                    thursday: 'Jeudi', friday: 'Vendredi', saturday: 'Samedi', sunday: 'Dimanche'
+                };
+
+                return Object.entries(hours)
+                    .filter(([day, time]) => time && time.trim())
+                    .map(([day, time]) => `<p><strong>${dayNames[day]}:</strong> ${time}</p>`)
+                    .join('');
+            }
+
+            checkAvailableSections() {
+                const sections = ['menu_du_jour', 'carte_principale', 'menu_boissons'];
+                
+                sections.forEach(sectionKey => {
+                    if (this.isSectionEnabled(sectionKey)) {
+                        this.availableSections.push(sectionKey);
+                    }
+                });
+
+                if (this.availableSections.length === 0) {
+                    document.getElementById('no-menu-section').style.display = 'block';
+                }
+            }
+
+            isSectionEnabled(sectionKey) {
+                const section = this.businessData.data[sectionKey];
+                if (!section) return false;
+                
+                if (typeof section.enabled !== 'undefined' && !section.enabled) {
+                    return false;
+                }
+                
+                if (section.items && Array.isArray(section.items)) {
+                    return section.items.length > 0;
+                }
+                
+                if (section.categories && Array.isArray(section.categories)) {
+                    return section.categories.some(cat => cat.items && cat.items.length > 0);
+                }
+                
+                return false;
+            }
+
+            generateMenuNavigation() {
+                if (this.availableSections.length === 0) return;
+
+                const menuNav = document.getElementById('menu-nav');
+                const navButtons = this.availableSections.map(section => {
+                    const names = {
+                        'menu_du_jour': 'Menu du Jour',
+                        'carte_principale': 'Notre Carte',
+                        'menu_boissons': 'Boissons'
+                    };
+                    
+                    return `<button class="menu-nav-btn" data-section="${section}">
+                        ${names[section]}
+                    </button>`;
+                }).join('');
+
+                menuNav.innerHTML = navButtons;
+
+                // Activer la première section
+                if (this.availableSections.length > 0) {
+                    this.showSection(this.availableSections[0]);
+                }
+            }
+
+            async loadMenuSections() {
+                for (const sectionKey of this.availableSections) {
+                    await this.loadMenuSection(sectionKey);
+                }
+            }
+
+            async loadMenuSection(sectionKey) {
+                const sectionData = this.businessData.data[sectionKey];
+                
+                switch (sectionKey) {
+                    case 'menu_du_jour':
+                        await this.renderMenuDuJour(sectionData);
+                        break;
+                    case 'carte_principale':
+                        await this.renderCartePrincipale(sectionData);
+                        break;
+                    case 'menu_boissons':
+                        await this.renderMenuBoissons(sectionData);
+                        break;
+                }
+            }
+
+            async renderMenuDuJour(data) {
+                const container = document.getElementById('menu-du-jour-items');
+                if (!data.items || data.items.length === 0) return;
+
+                const itemsHTML = await Promise.all(
+                    data.items.map(item => this.renderMenuItem(item))
+                );
+
+                container.innerHTML = itemsHTML.join('');
+            }
+
+            async renderCartePrincipale(data) {
+                const container = document.getElementById('carte-principale-content');
+                if (!data.categories || data.categories.length === 0) return;
+
+                let html = '';
+                for (const category of data.categories) {
+                    if (!category.items || category.items.length === 0) continue;
+
+                    html += `
+                        <div class="menu-category">
+                            <h3 class="category-title">${category.name}</h3>
+                            <div class="items-grid">
+                    `;
+
+                    const itemsHTML = await Promise.all(
+                        category.items.map(item => this.renderMenuItem(item))
+                    );
+                    html += itemsHTML.join('');
+
+                    html += '</div></div>';
+                }
+
+                container.innerHTML = html;
+            }
+
+            async renderMenuBoissons(data) {
+                const container = document.getElementById('menu-boissons-content');
+                if (!data.categories || data.categories.length === 0) return;
+
+                let html = '';
+                for (const category of data.categories) {
+                    if (!category.items || category.items.length === 0) continue;
+
+                    html += `
+                        <div class="menu-category">
+                            <h3 class="category-title">${category.name}</h3>
+                            <div class="items-grid">
+                    `;
+
+                    const itemsHTML = await Promise.all(
+                        category.items.map(item => this.renderMenuItem(item, true))
+                    );
+                    html += itemsHTML.join('');
+
+                    html += '</div></div>';
+                }
+
+                container.innerHTML = html;
+            }
+
+            async renderMenuItem(item, isBeverage = false) {
+                let imageHTML = '';
+                if (item.image_url) {
+                    try {
+                        const imageUrl = await window.FirebaseClient.getImageUrl(item.image_url);
+                        imageHTML = `<img src="${imageUrl}" alt="${item.name}" class="item-image" loading="lazy">`;
+                    } catch (error) {
+                        console.warn('Erreur chargement image:', error);
+                    }
+                }
+
+                return `
+                    <div class="item-card">
+                        ${imageHTML}
+                        <div class="item-content">
+                            <h4 class="item-title">${item.name}</h4>
+                            ${item.description ? `<p class="item-description">${item.description}</p>` : ''}
+                            ${item.price ? `<div class="item-price">${item.price}</div>` : ''}
+                        </div>
+                    </div>
+                `;
+            }
+
+            setupEventListeners() {
+                // Navigation entre sections du menu
+                document.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('menu-nav-btn')) {
+                        const section = e.target.dataset.section;
+                        this.showSection(section);
+                    }
+                });
+
+                // Bouton commander
+                const orderBtn = document.getElementById('order-btn');
+                if (this.businessData.data.widgets && this.businessData.data.widgets.gloria_food && this.businessData.data.widgets.gloria_food.enabled) {
+                    orderBtn.onclick = () => window.location.href = 'reservation.html';
+                } else {
+                    orderBtn.onclick = () => window.location.href = 'contact.html';
+                }
+            }
+
+            showSection(sectionKey) {
+                // Masquer toutes les sections
+                document.querySelectorAll('#menu-du-jour-section, #carte-principale-section, #menu-boissons-section')
+                    .forEach(section => section.style.display = 'none');
+                
+                // Désactiver tous les boutons
+                document.querySelectorAll('.menu-nav-btn')
+                    .forEach(btn => btn.classList.remove('active'));
+                
+                // Afficher la section demandée
+                const sectionElement = document.getElementById(`${sectionKey}-section`);
+                if (sectionElement) {
+                    sectionElement.style.display = 'block';
+                }
+                
+                // Activer le bouton correspondant
+                const button = document.querySelector(`[data-section="${sectionKey}"]`);
+                if (button) {
+                    button.classList.add('active');
+                }
+                
+                this.activeSection = sectionKey;
+                
+                // Scroll to top of content
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            showErrorMessage() {
+                const errorHTML = `
+                    <div class="container" style="text-align: center; padding: 4rem 0;">
+                        <h2>Erreur de chargement</h2>
+                        <p>Impossible de charger le menu. Veuillez réessayer plus tard.</p>
+                        <button onclick="location.reload()" class="btn-restaurant" style="margin-top: 2rem;">
+                            Recharger la page
+                        </button>
+                    </div>
+                `;
+                document.querySelector('main').innerHTML = errorHTML;
+            }
+        }
+
+        // Fonction pour le menu mobile
+        function toggleMobileMenu() {
+            const navMenu = document.getElementById('nav-menu');
+            navMenu.classList.toggle('active');
+        }
+
+        // Initialisation de la page
+        let menuLoader;
+        window.addEventListener('DOMContentLoaded', async function() {
+            try {
+                menuLoader = new MenuPageLoader();
+                await menuLoader.initialize();
+            } catch (error) {
+                console.error('Erreur d\'initialisation de la page menu:', error);
+            }
+        });
+
+        // Animations au scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-on-scroll');
+                }
+            });
+        }, observerOptions);
+
+        // Observer les éléments après le chargement
+        setTimeout(() => {
+            document.querySelectorAll('.item-card, .menu-category').forEach(el => {
+                observer.observe(el);
+            });
+        }, 500);
+
+        // Gestion du bouton retour en haut
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            if (scrollTop > 300) {
+                if (!document.getElementById('back-to-top')) {
+                    const backToTopBtn = document.createElement('button');
+                    backToTopBtn.id = 'back-to-top';
+                    backToTopBtn.innerHTML = '↑';
+                    backToTopBtn.className = 'back-to-top-btn';
+                    backToTopBtn.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+                    document.body.appendChild(backToTopBtn);
+                }
+            } else {
+                const btn = document.getElementById('back-to-top');
+                if (btn) btn.remove();
+            }
+        });
+    </script>
+
+    <style>
+        /* Styles additionnels pour la page menu */
+        .menu-page {
+            padding-top: 0;
+        }
+
+        .menu-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 6rem 0 4rem;
+            text-align: center;
+            margin-top: 80px;
+        }
+
+        .menu-header h1 {
+            font-family: var(--font-primary);
+            font-size: 3.5rem;
+            color: white;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .menu-navigation {
+            background: white;
+            padding: 1.5rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 80px;
+            z-index: 50;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .menu-nav-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .menu-nav-btn {
+            background: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 0.75rem 2rem;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .menu-nav-btn:hover,
+        .menu-nav-btn.active {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(212, 121, 60, 0.3);
+        }
+
+        .menu-section {
+            min-height: 50vh;
+        }
+
+        .back-to-top-btn {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: var(--shadow-warm);
+            transition: all 0.3s ease;
+        }
+
+        .back-to-top-btn:hover {
+            background: var(--secondary-color);
+            transform: scale(1.1);
+        }
+
+        /* Animation d'apparition des éléments */
+        .item-card,
+        .menu-category {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .item-card.animate-on-scroll,
+        .menu-category.animate-on-scroll {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive amélioré pour la page menu */
+        @media (max-width: 768px) {
+            .menu-header {
+                padding: 4rem 0 3rem;
+            }
+            
+            .menu-header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .menu-navigation {
+                padding: 1rem 0;
+            }
+            
+            .menu-nav-buttons {
+                justify-content: flex-start;
+                overflow-x: auto;
+                padding: 0 1rem;
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+            }
+            
+            .menu-nav-buttons::-webkit-scrollbar {
+                display: none;
+            }
+            
+            .menu-nav-btn {
+                white-space: nowrap;
+                flex-shrink: 0;
+                padding: 0.6rem 1.5rem;
+                font-size: 0.85rem;
+            }
+            
+            .back-to-top-btn {
+                bottom: 1rem;
+                right: 1rem;
+                width: 45px;
+                height: 45px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .menu-header h1 {
+                font-size: 2rem;
+            }
+            
+            .menu-nav-btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.8rem;
+            }
+        }
+
+        /* Améliorations pour l'accessibilité */
+        .menu-nav-btn:focus {
+            outline: 3px solid rgba(212, 121, 60, 0.5);
+            outline-offset: 2px;
+        }
+
+        .back-to-top-btn:focus {
+            outline: 3px solid rgba(212, 121, 60, 0.5);
+            outline-offset: 2px;
+        }
+
+        /* États de chargement spécifiques */
+        .menu-loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem 0;
+            font-style: italic;
+            color: var(--text-muted);
+        }
+
+        .menu-loading::before {
+            content: '';
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--primary-color);
+            border-top: 2px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 0.5rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Améliorations typographiques */
+        .category-title {
+            position: relative;
+            padding: 0 3rem;
+        }
+
+        .category-title::before,
+        .category-title::after {
+            font-family: serif;
+            color: var(--accent-color);
+            font-size: 1.2rem;
+        }
+
+        .item-description {
+            font-style: italic;
+            line-height: 1.6;
+        }
+
+        .item-price::after {
+            content: ' €';
+            font-size: 0.9em;
+        }
+    </style>
+</body>
+</html>

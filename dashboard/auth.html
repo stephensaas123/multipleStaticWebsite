@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion - Dashboard Business</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="auth-container">
+        <div class="auth-box">
+            <div id="login-section">
+                <h2>Connexion Dashboard</h2>
+                <p class="section-description">Connectez-vous pour gérer votre site web</p>
+                
+                <form id="login-form">
+                    <div class="form-group">
+                        <input type="email" id="login-email" placeholder="Adresse email" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="login-password" placeholder="Mot de passe" required>
+                    </div>
+                    <button type="submit" id="login-btn">
+                        Se connecter
+                    </button>
+                </form>
+                
+                <p>
+                    Pas encore de compte ? 
+                    <a href="#" id="show-register">Créer un compte</a>
+                </p>
+                
+                <p>
+                    <a href="#" id="forgot-password">Mot de passe oublié ?</a>
+                </p>
+            </div>
+
+            <div id="register-section" style="display: none;">
+                <h2>Créer un compte</h2>
+                <p class="section-description">Créez votre compte et votre site web professionnel</p>
+                
+                <form id="register-form">
+                    <div class="form-group">
+                        <input type="email" id="reg-email" placeholder="Adresse email" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="reg-password" placeholder="Mot de passe (min. 6 caractères)" required minlength="6">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="reg-password-confirm" placeholder="Confirmer le mot de passe" required minlength="6">
+                    </div>
+                    
+                    <div class="form-group">
+                        <select id="business-type" required>
+                            <option value="">Choisir le type de business</option>
+                            <option value="restaurant">🍽️ Restaurant</option>
+                            <option value="coiffeur">✂️ Salon de coiffure</option>
+                            <option value="independant">👨‍💼 Professionnel indépendant</option>
+                            <option value="commerce">🏪 Commerce</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <input type="text" id="business-name" placeholder="Nom de votre business" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <input type="text" id="business-id" placeholder="Identifiant unique (ex: restaurant-dubois)" required pattern="[a-z0-9_-]+" title="Lettres minuscules, chiffres, tirets et underscores uniquement">
+                        <small>Cet identifiant sera utilisé dans l'URL de votre site</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="terms-accept" required>
+                            J'accepte les <a href="#" target="_blank">conditions d'utilisation</a>
+                        </label>
+                    </div>
+                    
+                    <button type="submit" id="register-btn">
+                        Créer mon compte
+                    </button>
+                </form>
+                
+                <p>
+                    Déjà un compte ? 
+                    <a href="#" id="show-login">Se connecter</a>
+                </p>
+            </div>
+
+            <div id="reset-password-section" style="display: none;">
+                <h2>Réinitialiser le mot de passe</h2>
+                <p class="section-description">Entrez votre email pour recevoir un lien de réinitialisation</p>
+                
+                <form id="reset-password-form">
+                    <div class="form-group">
+                        <input type="email" id="reset-email" placeholder="Adresse email" required>
+                    </div>
+                    <button type="submit" id="reset-btn">
+                        Envoyer le lien
+                    </button>
+                </form>
+                
+                <p>
+                    <a href="#" id="back-to-login">Retour à la connexion</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-storage-compat.js"></script>
+    
+    <!-- Configuration Firebase -->
+    <script src="../config/firebase-config.js"></script>
+    
+    <!-- Scripts personnalisés -->
+    <script>
+        // Initialisation Firebase
+        firebase.initializeApp(window.FIREBASE_CONFIG);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        const storage = firebase.storage();
+
+        // Variables globales
+        let currentSection = 'login';
+
+        // DOM Elements
+        const loginSection = document.getElementById('login-section');
+        const registerSection = document.getElementById('register-section');
+        const resetPasswordSection = document.getElementById('reset-password-section');
+        
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+        const resetPasswordForm = document.getElementById('reset-password-form');
+
+        // Navigation entre sections
+        document.getElementById('show-register').addEventListener('click', (e) => {
+            e.preventDefault();
+            showSection('register');
+        });
+
+        document.getElementById('show-login').addEventListener('click', (e) => {
+            e.preventDefault();
+            showSection('login');
+        });
+
+        document.getElementById('forgot-password').addEventListener('click', (e) => {
+            e.preventDefault();
+            showSection('reset-password');
+        });
+
+        document.getElementById('back-to-login').addEventListener('click', (e) => {
+            e.preventDefault();
+            showSection('login');
+        });
+
+        function showSection(section) {
+            // Masquer toutes les sections
+            loginSection.style.display = 'none';
+            registerSection.style.display = 'none';
+            resetPasswordSection.style.display = 'none';
+            
+            // Afficher la section demandée
+            switch(section) {
+                case 'register':
+                    registerSection.style.display = 'block';
+                    break;
+                case 'reset-password':
+                    resetPasswordSection.style.display = 'block';
+                    break;
+                default:
+                    loginSection.style.display = 'block';
+            }
+            
+            currentSection = section;
+            clearMessages();
+        }
+
+        // Vérification de l'état d'authentification
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                // Rediriger vers le dashboard
+                window.location.href = 'index.html';
+            }
+        });
+
+        // Gestion de la connexion
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            const loginBtn = document.getElementById('login-btn');
+            
+            setLoading(loginBtn, true);
+            clearMessages();
+            
+            try {
+                await auth.signInWithEmailAndPassword(email, password);
+                showMessage('Connexion réussie, redirection...', 'success');
+                // La redirection se fera automatiquement via onAuthStateChanged
+            } catch (error) {
+                console.error('Erreur de connexion:', error);
+                showMessage(getErrorMessage(error), 'error');
+            } finally {
+                setLoading(loginBtn, false);
+            }
+        });
+
+        // Gestion de l'inscription
+        registerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('reg-email').value;
+            const password = document.getElementById('reg-password').value;
+            const passwordConfirm = document.getElementById('reg-password-confirm').value;
+            const businessType = document.getElementById('business-type').value;
+            const businessName = document.getElementById('business-name').value;
+            const businessId = document.getElementById('business-id').value;
+            const termsAccept = document.getElementById('terms-accept').checked;
+            const registerBtn = document.getElementById('register-btn');
+            
+            // Validations
+            if (password !== passwordConfirm) {
+                showMessage('Les mots de passe ne correspondent pas', 'error');
+                return;
+            }
+            
+            if (!termsAccept) {
+                showMessage('Vous devez accepter les conditions d\'utilisation', 'error');
+                return;
+            }
+            
+            // Valider le format de l'ID business
+            if (!/^[a-z0-9_-]+$/.test(businessId)) {
+                showMessage('L\'identifiant doit contenir uniquement des lettres minuscules, chiffres, tirets et underscores', 'error');
+                return;
+            }
+            
+            setLoading(registerBtn, true);
+            clearMessages();
+            
+            try {
+                // Vérifier si l'ID business est déjà pris
+                const existingBusiness = await db.collection('businesses').doc(businessId).get();
+                if (existingBusiness.exists) {
+                    throw new Error('Cet identifiant business est déjà utilisé');
+                }
+                
+                // Créer le compte utilisateur
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                const user = userCredential.user;
+                
+                // Créer le document business
+                await createBusinessDocument(user.uid, businessType, businessId, businessName);
+                
+                showMessage('Compte créé avec succès ! Redirection...', 'success');
+                
+            } catch (error) {
+                console.error('Erreur d\'inscription:', error);
+                showMessage(error.message || getErrorMessage(error), 'error');
+            } finally {
+                setLoading(registerBtn, false);
+            }
+        });
+
+        // Gestion de la réinitialisation du mot de passe
+        resetPasswordForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('reset-email').value;
+            const resetBtn = document.getElementById('reset-btn');
+            
+            setLoading(resetBtn, true);
+            clearMessages();
+            
+            try {
+                await auth.sendPasswordResetEmail(email);
+                showMessage('Email de réinitialisation envoyé ! Vérifiez votre boîte mail.', 'success');
+                
+                // Retourner à la section login après 3 secondes
+                setTimeout(() => {
+                    showSection('login');
+                }, 3000);
+                
+            } catch (error) {
+                console.error('Erreur de réinitialisation:', error);
+                showMessage(getErrorMessage(error), 'error');
+            } finally {
+                setLoading(resetBtn, false);
+            }
+        });
+
+        // Validation en temps réel de l'ID business
+        document.getElementById('business-id').addEventListener('input', (e) => {
+            const value = e.target.value;
+            const sanitized = value.toLowerCase().replace(/[^a-z0-9_-]/g, '');
+            
+            if (value !== sanitized) {
+                e.target.value = sanitized;
+            }
+        });
+
+        // Génération automatique de l'ID business basé sur le nom
+        document.getElementById('business-name').addEventListener('input', (e) => {
+            const businessName = e.target.value;
+            const businessIdField = document.getElementById('business-id');
+            
+            if (!businessIdField.value || businessIdField.dataset.autoGenerated === 'true') {
+                const generatedId = businessName
+                    .toLowerCase()
+                    .normalize('NFD')
+                    .replace(/[\u0300-\u036f]/g, '') // Supprimer les accents
+                    .replace(/[^a-z0-9]/g, '-')
+                    .replace(/-+/g, '-')
+                    .replace(/^-|-$/g, '');
+                
+                businessIdField.value = generatedId;
+                businessIdField.dataset.autoGenerated = 'true';
+            }
+        });
+
+        // Si l'utilisateur modifie manuellement l'ID, arrêter la génération automatique
+        document.getElementById('business-id').addEventListener('focus', (e) => {
+            e.target.dataset.autoGenerated = 'false';
+        });
+
+        // Fonctions utilitaires
+        async function createBusinessDocument(userUid, businessType, businessId, businessName) {
+            const businessData = {
+                business_id: businessId,
+                business_type: businessType,
+                owner_uid: userUid,
+                created_at: firebase.firestore.FieldValue.serverTimestamp(),
+                updated_at: firebase.firestore.FieldValue.serverTimestamp(),
+                data: getDefaultBusinessData(businessType, businessName)
+            };
+
+            await db.collection('businesses').doc(businessId).set(businessData);
+            
+            // Créer aussi un document utilisateur
+            await db.collection('users').doc(userUid).set({
+                email: auth.currentUser.email,
+                business_id: businessId,
+                business_type: businessType,
+                created_at: firebase.firestore.FieldValue.serverTimestamp()
+            });
+        }
+
+        function getDefaultBusinessData(businessType, businessName) {
+            const baseData = {
+                basic_info: {
+                    name: businessName,
+                    description: '',
+                    address: '',
+                    phone: '',
+                    email: '',
+                    hours: {
+                        monday: '',
+                        tuesday: '',
+                        wednesday: '',
+                        thursday: '',
+                        friday: '',
+                        saturday: '',
+                        sunday: ''
+                    }
+                },
+                hero: {
+                    title: `Bienvenue chez ${businessName}`,
+                    subtitle: '',
+                    cta_text: 'En savoir plus',
+                    image_url: ''
+                },
+                gallery: []
+            };
+
+            // Ajouter des sections spécifiques selon le type de business
+            switch (businessType) {
+                case 'restaurant':
+                    baseData.menu_du_jour = { enabled: false, items: [] };
+                    baseData.carte_principale = { enabled: false, categories: [] };
+                    baseData.menu_boissons = { enabled: false, categories: [] };
+                    baseData.widgets = {
+                        gloria_food: {
+                            enabled: false,
+                            restaurant_id: '',
+                            widget_code: ''
+                        }
+                    };
+                    break;
+
+                case 'coiffeur':
+                    baseData.services = { enabled: false, categories: [] };
+                    baseData.team = { enabled: false, members: [] };
+                    baseData.testimonials = { enabled: false, items: [] };
+                    baseData.widgets = {
+                        fresha: {
+                            enabled: false,
+                            salon_id: '',
+                            widget_code: ''
+                        }
+                    };
+                    break;
+
+                case 'independant':
+                    baseData.services = { enabled: false, categories: [] };
+                    baseData.testimonials = { enabled: false, items: [] };
+                    baseData.about = { enabled: false, content: '' };
+                    baseData.certifications = { enabled: false, items: [] };
+                    baseData.widgets = {
+                        calendly: {
+                            enabled: false,
+                            url: ''
+                        }
+                    };
+                    break;
+
+                case 'commerce':
+                    baseData.products = { enabled: false, categories: [] };
+                    baseData.promotions = { enabled: false, items: [] };
+                    baseData.widgets = {};
+                    break;
+            }
+
+            return baseData;
+        }
+
+        function setLoading(button, isLoading) {
+            if (isLoading) {
+                button.disabled = true;
+                button.innerHTML = '<span class="spinner"></span> Chargement...';
+            } else {
+                button.disabled = false;
+                // Restaurer le texte original
+                const buttonTexts = {
+                    'login-btn': 'Se connecter',
+                    'register-btn': 'Créer mon compte',
+                    'reset-btn': 'Envoyer le lien'
+                };
+                button.innerHTML = buttonTexts[button.id] || 'Valider';
+            }
+        }
+
+        function showMessage(message, type) {
+            clearMessages();
+            
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `${type}-message`;
+            messageDiv.textContent = message;
+            
+            const authBox = document.querySelector('.auth-box');
+            authBox.insertBefore(messageDiv, authBox.firstChild);
+            
+            // Supprimer automatiquement après 5 secondes
+            setTimeout(() => {
+                messageDiv.remove();
+            }, 5000);
+        }
+
+        function clearMessages() {
+            const messages = document.querySelectorAll('.success-message, .error-message, .auth-error');
+            messages.forEach(msg => msg.remove());
+        }
+
+        function getErrorMessage(error) {
+            const errorMessages = {
+                'auth/email-already-in-use': 'Cette adresse email est déjà utilisée',
+                'auth/invalid-email': 'Adresse email invalide',
+                'auth/operation-not-allowed': 'Opération non autorisée',
+                'auth/weak-password': 'Le mot de passe doit contenir au moins 6 caractères',
+                'auth/user-disabled': 'Ce compte a été désactivé',
+                'auth/user-not-found': 'Aucun compte trouvé avec cette adresse email',
+                'auth/wrong-password': 'Mot de passe incorrect',
+                'auth/too-many-requests': 'Trop de tentatives. Réessayez plus tard',
+                'auth/network-request-failed': 'Erreur de connexion. Vérifiez votre connexion internet'
+            };
+            
+            return errorMessages[error.code] || 'Une erreur est survenue. Veuillez réessayer.';
+        }
+    </script>
+
+    <style>
+        .section-description {
+            text-align: center;
+            color: #718096;
+            font-size: 0.9375rem;
+            margin-bottom: 2rem;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            line-height: 1.4;
+        }
+
+        .checkbox-label input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+            flex-shrink: 0;
+            margin-top: 0.125rem;
+        }
+
+        small {
+            display: block;
+            font-size: 0.75rem;
+            color: #718096;
+            margin-top: 0.25rem;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 1rem;
+            height: 1rem;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        button:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .success-message {
+            background: #f0fff4;
+            border: 1px solid #9ae6b4;
+            color: #276749;
+            padding: 1rem;
+            border-radius: 0.375rem;
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+        }
+
+        .error-message {
+            background: #fff5f5;
+            border: 1px solid #feb2b2;
+            color: #c53030;
+            padding: 1rem;
+            border-radius: 0.375rem;
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            .auth-box {
+                margin: 0.5rem;
+                padding: 1.5rem;
+            }
+
+            .auth-box h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</body>
+</html>
