@@ -1,0 +1,47 @@
+{
+  "name": "business-site-generator",
+  "version": "1.0.0",
+  "description": "Générateur automatique de sites web pour différents types de business",
+  "main": "generate-site.js",
+  "bin": {
+    "generate-site": "./generate-site.js"
+  },
+  "scripts": {
+    "generate": "node generate-site.js generate",
+    "list": "node generate-site.js list",
+    "validate": "node generate-site.js validate",
+    "update": "node generate-site.js update",
+    "dev": "node generate-site.js",
+    "test": "echo \"Tests à implémenter\" && exit 1"
+  },
+  "keywords": [
+    "website",
+    "generator",
+    "template",
+    "business",
+    "restaurant",
+    "coiffeur",
+    "commerce",
+    "firebase"
+  ],
+  "author": "Website",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^9.4.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.28.0",
+    "prettier": "^2.7.1"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/votre-username/business-site-generator.git"
+  },
+  "bugs": {
+    "url": "https://github.com/votre-username/business-site-generator/issues"
+  },
+  "homepage": "https://github.com/votre-username/business-site-generator#readme"
+}
